@@ -25,4 +25,12 @@ func _on_character_selected(character: Character):
 	sprite.scale = Vector2(1.8, 1.8) # idk why the the sprite size explodes - this is a fix
 
 func _on_main_laught_points_changed(points):
-	laugh_bar.value = points
+	if points == 0:
+		return
+	var tween = get_tree().create_tween()
+	tween.tween_property(laugh_bar, "value", points, 1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	var increase_by = .3
+	var smiley = laugh_bar.get_node("Smiley")
+	tween.tween_property(smiley, "scale", Vector2(smiley.scale.x + increase_by, smiley.scale.y + increase_by), .3).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(smiley, "scale", Vector2(smiley.scale.x - increase_by, smiley.scale.y - increase_by), .3).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=3 uid="uid://dc6bqmduefhpy"]
+[gd_scene load_steps=62 format=3 uid="uid://dc6bqmduefhpy"]
 
 [ext_resource type="Texture2D" uid="uid://baqcpbquym06p" path="res://Assets/Characters/Alex/Alex_idle_anim_32x32.png" id="1_62yxv"]
 [ext_resource type="Script" path="res://Character/Character.gd" id="1_a58sx"]
@@ -10,9 +10,10 @@
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="6_i6iwk"]
 [ext_resource type="Script" path="res://Character/ProgressBar.gd" id="8_hrbt1"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/animation_tree_state.gd" id="9_1ppwh"]
+[ext_resource type="Texture2D" uid="uid://dm41452pgyrkp" path="res://Assets/UI/target_character.png" id="11_yk30n"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_klc5l"]
-size = Vector2(20, 8)
+size = Vector2(20, 4)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vs3u5"]
 atlas = ExtResource("1_62yxv")
@@ -470,12 +471,12 @@ script = ExtResource("1_a58sx")
 min_distance = 50.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 28)
+position = Vector2(0, 30)
 shape = SubResource("RectangleShape2D_klc5l")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_d61m1")
-animation = &"Walk_Down"
+animation = &"Idle"
 frame = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -513,15 +514,20 @@ initial_state = NodePath("Idle")
 [node name="Idle" type="Node" parent="StateChart/ParallelState/Actions"]
 script = ExtResource("5_ffq0e")
 
-[node name="Transition" type="Node" parent="StateChart/ParallelState/Actions/Idle"]
+[node name="Manual Target" type="Node" parent="StateChart/ParallelState/Actions/Idle"]
 script = ExtResource("6_i6iwk")
 to = NodePath("../../Moving")
 event = &"set_target"
 
+[node name="Auto Target" type="Node" parent="StateChart/ParallelState/Actions/Idle"]
+script = ExtResource("6_i6iwk")
+to = NodePath("../../Moving")
+delay_seconds = 10.0
+
 [node name="Moving" type="Node" parent="StateChart/ParallelState/Actions"]
 script = ExtResource("5_ffq0e")
 
-[node name="Transition" type="Node" parent="StateChart/ParallelState/Actions/Moving"]
+[node name="Reached Target" type="Node" parent="StateChart/ParallelState/Actions/Moving"]
 script = ExtResource("6_i6iwk")
 to = NodePath("../../Using")
 event = &"reached_target"
@@ -529,7 +535,7 @@ event = &"reached_target"
 [node name="Using" type="Node" parent="StateChart/ParallelState/Actions"]
 script = ExtResource("5_ffq0e")
 
-[node name="Transition" type="Node" parent="StateChart/ParallelState/Actions/Using"]
+[node name="Finished Using" type="Node" parent="StateChart/ParallelState/Actions/Using"]
 script = ExtResource("6_i6iwk")
 to = NodePath("../../Idle")
 delay_seconds = 3.0
@@ -542,7 +548,7 @@ initial_state = NodePath("Idle")
 script = ExtResource("9_1ppwh")
 animation_tree = NodePath("../../../../AnimationTree")
 
-[node name="Transition" type="Node" parent="StateChart/ParallelState/Animations/Idle"]
+[node name="Set Target" type="Node" parent="StateChart/ParallelState/Animations/Idle"]
 script = ExtResource("6_i6iwk")
 to = NodePath("../../Move")
 event = &"set_target"
@@ -551,7 +557,7 @@ event = &"set_target"
 script = ExtResource("9_1ppwh")
 animation_tree = NodePath("../../../../AnimationTree")
 
-[node name="Transition" type="Node" parent="StateChart/ParallelState/Animations/Move"]
+[node name="Reached Target" type="Node" parent="StateChart/ParallelState/Animations/Move"]
 script = ExtResource("6_i6iwk")
 to = NodePath("../../Idle")
 event = &"reached_target"
@@ -565,9 +571,14 @@ offset_bottom = -1.0
 scale = Vector2(0.408155, 0.408155)
 script = ExtResource("8_hrbt1")
 
+[node name="Target" type="Sprite2D" parent="."]
+position = Vector2(0, 8)
+texture = ExtResource("11_yk30n")
+
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
+[connection signal="taken" from="StateChart/ParallelState/Actions/Idle/Auto Target" to="." method="_on_auto_target_taken"]
 [connection signal="state_physics_processing" from="StateChart/ParallelState/Actions/Moving" to="." method="_on_moving_state_physics_processing"]
 [connection signal="state_entered" from="StateChart/ParallelState/Actions/Using" to="ProgressBar" method="_on_using_state_entered"]
 [connection signal="state_exited" from="StateChart/ParallelState/Actions/Using" to="." method="_on_using_state_exited"]

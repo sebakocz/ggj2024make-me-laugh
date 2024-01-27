@@ -243,6 +243,7 @@ animations = [{
 }]
 
 [node name="Alex" instance=ExtResource("1_ttva4")]
+collision_layer = 4
 bad_trait = 1
 
 [node name="AnimatedSprite2D" parent="." index="1"]

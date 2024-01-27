@@ -2,12 +2,12 @@ extends CharacterBody2D
 class_name Character
 
 enum Trait {
-    GUITAR,
-    READING,
-    PAINTING,
-    KARAOKE,
-    COOKING,
-    GARDENING
+	GUITAR,
+	READING,
+	PAINTING,
+	KARAOKE,
+	COOKING,
+	GARDENING
 }
 
 enum TraitResult {
@@ -25,6 +25,7 @@ enum TraitResult {
 @onready var nav = $NavigationAgent2D
 @onready var state_chart = $StateChart
 @onready var animation_tree = $AnimationTree
+@onready var highlight = $Highlight
 
 signal clicked(character: Character)
 signal finished_use(result: TraitResult)
@@ -42,6 +43,10 @@ func set_item(item: Item):
 	state_chart.send_event("set_target")
 	set_modulate(Color.WHITE)
 	busy = true
+
+func auto_set_item(item: Item):
+	set_item(item)
+	item.auto_pick()
 
 func _on_moving_state_physics_processing(_delta: float):
 	var direction = nav.get_next_path_position() - global_position
@@ -103,3 +108,25 @@ func _is_diag(vector: Vector2=Vector2.ZERO) -> bool:
 		return true
 	else:
 		return false
+
+func _on_auto_target_taken():
+	var random_item = _get_random_unoccupied_item()
+	if random_item == null:
+		# return to idle state, basically try again later
+		state_chart.send_event("reached_target")
+		return
+
+	auto_set_item(random_item)
+
+func _get_random_unoccupied_item() -> Item:
+	var items = get_tree().get_nodes_in_group("item")
+	var unoccupied_items = []
+
+	for item in items:
+		if !item.occupied:
+			unoccupied_items.append(item)
+
+	if unoccupied_items.size() == 0:
+		return null
+
+	return unoccupied_items[randi() % unoccupied_items.size()]

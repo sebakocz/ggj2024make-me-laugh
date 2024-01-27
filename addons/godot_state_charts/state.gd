@@ -10,46 +10,45 @@ signal state_entered()
 signal state_exited()
 
 ## Called when the state receives an event. Only called if the state is active.
-signal event_received(event:StringName)
+signal event_received(event: StringName)
 
 ## Called when the state is processing.
-signal state_processing(delta:float)
+signal state_processing(delta: float)
 
 ## Called when the state is physics processing.
-signal state_physics_processing(delta:float)
+signal state_physics_processing(delta: float)
 
 ## Called when the state chart step function is called.
 signal state_stepped()
 
 ## Called when the state is receiving input.
-signal state_input(event:InputEvent)
+signal state_input(event: InputEvent)
 
 ## Called when the state is receiving unhandled input.
-signal state_unhandled_input(event:InputEvent)
+signal state_unhandled_input(event: InputEvent)
 
 ## Called every frame while a delayed transition is pending for this state.
 ## Returns the initial delay and the remaining delay of the transition.
-signal transition_pending(initial_delay:float, remaining_delay:float)
-
+signal transition_pending(initial_delay: float, remaining_delay: float)
 
 ## Whether the state is currently active (internal flag, use active).
 var _state_active = false
 
 ## Whether the current state is active.
-var active:bool:
+var active: bool:
 	get: return _state_active
 	
 ## The currently active pending transition.
-var _pending_transition:Transition = null
+var _pending_transition: Transition = null
 
 ## Remaining time in seconds until the pending transition is triggered.
-var _pending_transition_time:float = 0
+var _pending_transition_time: float = 0
 
 ## The transitions of this state.
-var _transitions:Array[Transition] = []
+var _transitions: Array[Transition] = []
 
 ## The state chart that owns this state.
-var _chart:StateChart
+var _chart: StateChart
 
 func _ready():
 	# don't run in the editor
@@ -57,24 +56,21 @@ func _ready():
 		return
 		
 	_chart = _find_chart(get_parent())
-		
 
 ## Finds the owning state chart by moving upwards.
-func _find_chart(parent:Node):
+func _find_chart(parent: Node):
 	if parent is StateChart:
 		return parent
 	
-	return _find_chart(parent.get_parent())	
+	return _find_chart(parent.get_parent())
 
 ## Runs a transition either immediately or delayed depending on the 
 ## transition settings.
-func _run_transition(transition:Transition):
+func _run_transition(transition: Transition):
 	if transition.delay_seconds > 0:
 		_queue_transition(transition)
 	else:
 		_chart._run_transition(transition, self)
-		
-	
 
 ## Called when the state chart is built.
 func _state_init():
@@ -94,7 +90,7 @@ func _state_init():
 ## In this case the state should not automatically activate a default child state.
 ## This is to avoid a situation where a state is entered, activates a child then immediately
 ## exits and activates another child due to a transition.
-func _state_enter(expect_transition:bool = false):
+func _state_enter(expect_transition: bool=false):
 	# print("state_enter: " + name)
 	_state_active = true
 	
@@ -134,7 +130,7 @@ func _state_exit():
 ##
 ## This method will only be called if the state is active and should only be called on
 ## active children if children should be saved.
-func _state_save(saved_state:SavedState, child_levels:int = -1):
+func _state_save(saved_state: SavedState, child_levels: int=- 1):
 	if not active:
 		push_error("_state_save should only be called if the state is active.")
 		return
@@ -150,13 +146,12 @@ func _state_save(saved_state:SavedState, child_levels:int = -1):
 		return
 
 	# calculate the child levels for the children, -1 means all children
-	var sub_child_levels = -1 if child_levels == -1 else child_levels - 1
+	var sub_child_levels = -1 if child_levels == - 1 else child_levels - 1
 
 	# save all children
 	for child in get_children():
 		if child is State and child.active:
 			child._state_save(our_saved_state, sub_child_levels)
-
 
 ## Called when the state should be restored. The parameter is the SavedState object
 ## of the parent state. The state is expected to retrieve the SavedState object
@@ -167,7 +162,7 @@ func _state_save(saved_state:SavedState, child_levels:int = -1):
 ##
 ## If the state was not active when it was saved, this method still will be called
 ## but the given SavedState object will not contain any data for this state.
-func _state_restore(saved_state:SavedState, child_levels:int = -1):
+func _state_restore(saved_state: SavedState, child_levels: int=- 1):
 	# print("restoring state " + name)
 	var our_saved_state = saved_state.get_substate_or_null(self)
 	if our_saved_state == null:
@@ -193,16 +188,15 @@ func _state_restore(saved_state:SavedState, child_levels:int = -1):
 		return
 
 	# calculate the child levels for the children, -1 means all children
-	var sub_child_levels = -1 if child_levels == -1 else child_levels - 1
+	var sub_child_levels = -1 if child_levels == - 1 else child_levels - 1
 
 	# restore all children
 	for child in get_children():
 		if child is State:
 			child._state_restore(our_saved_state, sub_child_levels)
 
-
 ## Called while the state is active.
-func _process(delta:float):
+func _process(delta: float):
 	if Engine.is_editor_hint():
 		return
 
@@ -224,13 +218,10 @@ func _process(delta:float):
 			# print("requesting transition from " + name + " to " + transition_to_send.to.get_concatenated_names() + " now")
 			_chart._run_transition(transition_to_send, self)
 
-
-
-func _handle_transition(transition:Transition, source:State):
+func _handle_transition(transition: Transition, source: State):
 	push_error("State " + name + " cannot handle transitions.")
-	
 
-func _physics_process(delta:float):
+func _physics_process(delta: float):
 	if Engine.is_editor_hint():
 		return
 	state_physics_processing.emit(delta)
@@ -239,15 +230,14 @@ func _physics_process(delta:float):
 func _state_step():
 	state_stepped.emit()
 
-func _input(event:InputEvent):
+func _input(event: InputEvent):
 	state_input.emit(event)
 
-
-func _unhandled_input(event:InputEvent):
+func _unhandled_input(event: InputEvent):
 	state_unhandled_input.emit(event)
 
 ## Handles the given event. Returns true if the event was consumed, false otherwise.
-func _state_event(event:StringName) -> bool:
+func _state_event(event: StringName) -> bool:
 	if not active:
 		return false
 
@@ -265,7 +255,7 @@ func _state_event(event:StringName) -> bool:
 
 ## Queues the transition to be triggered after the delay.
 ## Executes the transition immediately if the delay is 0.
-func _queue_transition(transition:Transition):
+func _queue_transition(transition: Transition):
 	# print("transitioning from " + name + " to " + transition.to.get_concatenated_names() + " in " + str(transition.delay_seconds) + " seconds" )
 	# queue the transition for the delay time (0 means next frame)
 	_pending_transition = transition
@@ -273,7 +263,6 @@ func _queue_transition(transition:Transition):
 	
 	# enable processing when we have a transition
 	set_process(true)
-
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var result = []
@@ -289,15 +278,14 @@ func _get_configuration_warnings() -> PackedStringArray:
 	if not found:
 		result.append("State is not a child of a StateChart. This will not work.")
 
-	return result		
+	return result
 
-
-func _toggle_processing(active:bool):
+func _toggle_processing(active: bool):
 	set_process(active and _has_connections(state_processing))
 	set_physics_process(active and _has_connections(state_physics_processing))
 	set_process_input(active and _has_connections(state_input))
 	set_process_unhandled_input(active and _has_connections(state_unhandled_input))
 
 ## Checks whether the given signal has connections. 
-func _has_connections(sgnl:Signal) -> bool:
+func _has_connections(sgnl: Signal) -> bool:
 	return sgnl.get_connections().size() > 0

@@ -243,9 +243,9 @@ animations = [{
 }]
 
 [node name="Adam" instance=ExtResource("1_fpv73")]
+collision_layer = 2
 good_trait = 2
 bad_trait = 3
 
-[node name="AnimatedSprite2D" parent="." index="0"]
+[node name="AnimatedSprite2D" parent="." index="1"]
 sprite_frames = SubResource("SpriteFrames_lhda6")
-animation = &"Walk_Down"

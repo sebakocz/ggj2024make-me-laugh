@@ -1,6 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://ckcwtq5q5ccrb"]
+[gd_scene load_steps=7 format=3 uid="uid://ckcwtq5q5ccrb"]
 
 [ext_resource type="Script" path="res://Game/UI.gd" id="1_ahg80"]
+[ext_resource type="Texture2D" uid="uid://c770rqfivasng" path="res://Assets/Emojis/7_rolling on the floor laughing.png" id="2_jf8cn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lbkyi"]
+
+[sub_resource type="Gradient" id="Gradient_f3qwe"]
+colors = PackedColorArray(0, 0.368627, 0, 1, 0, 0.639216, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_43j3c"]
+gradient = SubResource("Gradient_f3qwe")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_e2tub"]
+texture = SubResource("GradientTexture2D_43j3c")
 
 [node name="UI" type="CanvasLayer" node_paths=PackedStringArray("value_name", "value_likes", "value_hates", "sprite")]
 script = ExtResource("1_ahg80")
@@ -10,17 +22,31 @@ value_hates = NodePath("Panel/GridContainer/Hates_Value")
 sprite = NodePath("Panel/Sprite2D")
 
 [node name="LaughBar" type="ProgressBar" parent="."]
-offset_left = 548.0
-offset_top = 37.0
-offset_right = 1318.0
-offset_bottom = 93.0
-max_value = 60.0
+anchors_preset = -1
+anchor_left = 0.299479
+anchor_top = 0.0203704
+anchor_right = 0.700521
+anchor_bottom = 0.0722222
+offset_left = 1.90735e-05
+offset_right = 3.8147e-05
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 32
+theme_override_styles/background = SubResource("StyleBoxFlat_lbkyi")
+theme_override_styles/fill = SubResource("StyleBoxTexture_e2tub")
+metadata/_edit_use_anchors_ = true
+
+[node name="Smiley" type="Sprite2D" parent="LaughBar"]
+position = Vector2(771, 29)
+scale = Vector2(3.49101, 3.49101)
+texture = ExtResource("2_jf8cn")
 
 [node name="Panel" type="Panel" parent="."]
-offset_left = 1160.0
-offset_top = 113.0
-offset_right = 1404.0
-offset_bottom = 227.0
+offset_left = 1298.0
+offset_top = 183.0
+offset_right = 1541.0
+offset_bottom = 301.0
 
 [node name="Sprite2D" type="Sprite2D" parent="Panel"]
 position = Vector2(46, 41)
