@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://ckcwtq5q5ccrb"]
 
 [ext_resource type="Script" path="res://Game/UI.gd" id="1_ahg80"]
-[ext_resource type="Texture2D" uid="uid://c770rqfivasng" path="res://Assets/Emojis/7_rolling on the floor laughing.png" id="2_jf8cn"]
+[ext_resource type="Texture2D" uid="uid://c770rqfivasng" path="res://Assets/Emojis/Good/7_rolling on the floor laughing.png" id="2_2q2rf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lbkyi"]
 
@@ -40,13 +40,13 @@ metadata/_edit_use_anchors_ = true
 [node name="Smiley" type="Sprite2D" parent="LaughBar"]
 position = Vector2(771, 29)
 scale = Vector2(3.49101, 3.49101)
-texture = ExtResource("2_jf8cn")
+texture = ExtResource("2_2q2rf")
 
 [node name="Panel" type="Panel" parent="."]
-offset_left = 1298.0
-offset_top = 183.0
-offset_right = 1541.0
-offset_bottom = 301.0
+offset_left = 506.0
+offset_top = 175.0
+offset_right = 749.0
+offset_bottom = 293.0
 
 [node name="Sprite2D" type="Sprite2D" parent="Panel"]
 position = Vector2(46, 41)

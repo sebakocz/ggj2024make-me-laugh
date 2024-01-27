@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://cnpvuhye6ru8b"]
+[gd_scene load_steps=23 format=3 uid="uid://cnpvuhye6ru8b"]
 
 [ext_resource type="Script" path="res://Game/Main.gd" id="1_inf3x"]
 [ext_resource type="Script" path="res://Game/Debug.gd" id="2_d8mgm"]
@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://bwfykgec8u4t4" path="res://Item/List/Kitchen.tscn" id="10_yuyub"]
 [ext_resource type="PackedScene" uid="uid://dtpxkwx1umu0v" path="res://Item/List/Plant.tscn" id="11_0wnyt"]
 [ext_resource type="Texture2D" uid="uid://tamdhngcjqco" path="res://Assets/Tilesheets/2_LivingRoom_32x32.png" id="16_uhtm4"]
+[ext_resource type="PackedScene" uid="uid://1n847udyt1dh" path="res://Character/Thought_bubble.tscn" id="17_qhafq"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tcdxh"]
 texture = ExtResource("5_ues1l")
@@ -10891,19 +10892,15 @@ texture = ExtResource("8_17btl")
 22:140/0 = 0
 22:140/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 22:140/0/physics_layer_0/angular_velocity = 0.0
-22:140/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 23:140/0 = 0
 23:140/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 23:140/0/physics_layer_0/angular_velocity = 0.0
-23:140/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 24:140/0 = 0
 24:140/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 24:140/0/physics_layer_0/angular_velocity = 0.0
-24:140/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 25:140/0 = 0
 25:140/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 25:140/0/physics_layer_0/angular_velocity = 0.0
-25:140/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 26:140/0 = 0
 26:140/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 26:140/0/physics_layer_0/angular_velocity = 0.0
@@ -10991,19 +10988,15 @@ texture = ExtResource("8_17btl")
 22:141/0 = 0
 22:141/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 22:141/0/physics_layer_0/angular_velocity = 0.0
-22:141/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 23:141/0 = 0
 23:141/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 23:141/0/physics_layer_0/angular_velocity = 0.0
-23:141/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 24:141/0 = 0
 24:141/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 24:141/0/physics_layer_0/angular_velocity = 0.0
-24:141/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 25:141/0 = 0
 25:141/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 25:141/0/physics_layer_0/angular_velocity = 0.0
-25:141/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 26:141/0 = 0
 26:141/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 26:141/0/physics_layer_0/angular_velocity = 0.0
@@ -11091,19 +11084,15 @@ texture = ExtResource("8_17btl")
 22:142/0 = 0
 22:142/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 22:142/0/physics_layer_0/angular_velocity = 0.0
-22:142/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 23:142/0 = 0
 23:142/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 23:142/0/physics_layer_0/angular_velocity = 0.0
-23:142/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 24:142/0 = 0
 24:142/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 24:142/0/physics_layer_0/angular_velocity = 0.0
-24:142/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 25:142/0 = 0
 25:142/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 25:142/0/physics_layer_0/angular_velocity = 0.0
-25:142/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 26:142/0 = 0
 26:142/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 26:142/0/physics_layer_0/angular_velocity = 0.0
@@ -17305,8 +17294,6 @@ source_geometry_group_name = &"navigation"
 script = ExtResource("1_inf3x")
 item_state_charts_debug = NodePath("Debug/ItemStateChartDebugger")
 character_state_charts_debug = NodePath("Debug/CharacterStateChartDebugger")
-good_bonus = 5
-bad_bonus = 20
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
@@ -17317,16 +17304,16 @@ zoom = Vector2(2, 2)
 script = ExtResource("2_d8mgm")
 
 [node name="CharacterStateChartDebugger" parent="Debug" instance=ExtResource("5_nmonl")]
-offset_left = 218.0
-offset_top = -762.0
-offset_right = -1454.0
-offset_bottom = -1399.0
+offset_left = 269.0
+offset_top = -231.0
+offset_right = -1449.0
+offset_bottom = -872.0
 
 [node name="ItemStateChartDebugger" parent="Debug" instance=ExtResource("5_nmonl")]
-offset_left = -482.0
-offset_top = -757.0
-offset_right = -2168.0
-offset_bottom = -1401.0
+offset_left = -469.0
+offset_top = -220.0
+offset_right = -2195.0
+offset_bottom = -862.0
 
 [node name="Characters" type="Node" parent="."]
 
@@ -17378,5 +17365,8 @@ layer_3/tile_data = PackedInt32Array(-262130, 1572866, 25, -196594, 1572866, 26,
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("NavigationPolygon_5ol1i")
+
+[node name="ThoughtBubble" parent="." instance=ExtResource("17_qhafq")]
+position = Vector2(-190, 52)
 
 [connection signal="laught_points_changed" from="." to="UI" method="_on_main_laught_points_changed"]

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bcy211ny305j6"
-path="res://.godot/imported/8_face with tears of joy.png-e8b6bee32ada0c48850801d6a312c7bd.ctex"
+uid="uid://coec7askefvsx"
+path="res://.godot/imported/38_face with raised eyebrow.png-9649860cd27f4e9d5c99ff0528223698.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Emojis/8_face with tears of joy.png"
-dest_files=["res://.godot/imported/8_face with tears of joy.png-e8b6bee32ada0c48850801d6a312c7bd.ctex"]
+source_file="res://Assets/Emojis/Neutral/38_face with raised eyebrow.png"
+dest_files=["res://.godot/imported/38_face with raised eyebrow.png-9649860cd27f4e9d5c99ff0528223698.ctex"]
 
 [params]
 

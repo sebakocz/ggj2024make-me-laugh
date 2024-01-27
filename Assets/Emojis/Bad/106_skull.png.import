@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c770rqfivasng"
-path="res://.godot/imported/7_rolling on the floor laughing.png-e67de89759046ccec1e7f4fdb78a4c2c.ctex"
+uid="uid://pajnbedb42sb"
+path="res://.godot/imported/106_skull.png-30e6216811a31c9d3714838ea730935b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Emojis/7_rolling on the floor laughing.png"
-dest_files=["res://.godot/imported/7_rolling on the floor laughing.png-e67de89759046ccec1e7f4fdb78a4c2c.ctex"]
+source_file="res://Assets/Emojis/Bad/106_skull.png"
+dest_files=["res://.godot/imported/106_skull.png-30e6216811a31c9d3714838ea730935b.ctex"]
 
 [params]
 

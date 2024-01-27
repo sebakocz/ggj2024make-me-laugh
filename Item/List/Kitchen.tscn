@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://bwfykgec8u4t4"]
+[gd_scene load_steps=7 format=3 uid="uid://bwfykgec8u4t4"]
 
 [ext_resource type="PackedScene" uid="uid://faavjmw2ol2x" path="res://Item/Item.tscn" id="1_chvpx"]
 [ext_resource type="Texture2D" uid="uid://b2lskos1bf141" path="res://Assets/Tilesheets/1_Generic_32x32.png" id="2_66q4r"]
+[ext_resource type="Texture2D" uid="uid://dvtnyaf251olq" path="res://Assets/UI/target_item_big.png" id="3_hxwu2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_eiu7w"]
 atlas = ExtResource("2_66q4r")
@@ -25,3 +26,7 @@ shape = SubResource("RectangleShape2D_sfv4c")
 [node name="CollisionShape2D" parent="Area2D" index="0"]
 position = Vector2(0.25, -0.5)
 shape = SubResource("RectangleShape2D_5xgja")
+
+[node name="Highlight" parent="." index="4"]
+position = Vector2(2.74181e-06, -2.6226e-06)
+texture = ExtResource("3_hxwu2")

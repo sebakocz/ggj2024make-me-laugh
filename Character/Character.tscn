@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=3 uid="uid://dc6bqmduefhpy"]
+[gd_scene load_steps=64 format=3 uid="uid://dc6bqmduefhpy"]
 
 [ext_resource type="Texture2D" uid="uid://baqcpbquym06p" path="res://Assets/Characters/Alex/Alex_idle_anim_32x32.png" id="1_62yxv"]
 [ext_resource type="Script" path="res://Character/Character.gd" id="1_a58sx"]
@@ -12,8 +12,8 @@
 [ext_resource type="Script" path="res://addons/godot_state_charts/animation_tree_state.gd" id="9_1ppwh"]
 [ext_resource type="Texture2D" uid="uid://dm41452pgyrkp" path="res://Assets/UI/target_character.png" id="11_yk30n"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_klc5l"]
-size = Vector2(20, 4)
+[sub_resource type="CircleShape2D" id="CircleShape2D_6dchr"]
+radius = 5.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vs3u5"]
 atlas = ExtResource("1_62yxv")
@@ -466,13 +466,19 @@ transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7elrd"]
 size = Vector2(20, 42)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ljoxb"]
+bg_color = Color(0.298039, 0.690196, 0.223529, 0.282353)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mmio0"]
+bg_color = Color(0.4, 0.678431, 0.258824, 1)
+
 [node name="Character" type="CharacterBody2D" groups=["character"]]
 script = ExtResource("1_a58sx")
 min_distance = 50.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 30)
-shape = SubResource("RectangleShape2D_klc5l")
+position = Vector2(0, 27)
+shape = SubResource("CircleShape2D_6dchr")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_d61m1")
@@ -493,6 +499,8 @@ anim_player = NodePath("../AnimationPlayer")
 parameters/Move/blend_position = Vector2(-0.632558, 0.568766)
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+avoidance_enabled = true
+radius = 50.0
 
 [node name="Area2D" type="Area2D" parent="."]
 
@@ -564,14 +572,18 @@ event = &"reached_target"
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
 visible = false
-offset_left = -22.0
-offset_top = -28.0
-offset_right = 88.0
-offset_bottom = -1.0
+offset_left = -29.0
+offset_top = -32.0
+offset_right = 120.0
+offset_bottom = 5.0
 scale = Vector2(0.408155, 0.408155)
+theme_override_font_sizes/font_size = 24
+theme_override_styles/background = SubResource("StyleBoxFlat_ljoxb")
+theme_override_styles/fill = SubResource("StyleBoxFlat_mmio0")
 script = ExtResource("8_hrbt1")
 
-[node name="Target" type="Sprite2D" parent="."]
+[node name="Highlight" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(0, 8)
 texture = ExtResource("11_yk30n")
 

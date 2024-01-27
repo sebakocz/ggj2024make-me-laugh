@@ -22,6 +22,8 @@ enum TraitResult {
 @export var speed: float = 100
 @export var min_distance: float = 40
 
+@export var thought_bubble: PackedScene
+
 @onready var nav = $NavigationAgent2D
 @onready var state_chart = $StateChart
 @onready var animation_tree = $AnimationTree
@@ -29,6 +31,7 @@ enum TraitResult {
 
 signal clicked(character: Character)
 signal finished_use(result: TraitResult)
+signal auto_pick_start(character: Character)
 
 var current_target: Item = null
 var selected: bool = false
@@ -39,14 +42,17 @@ func set_target(target: Vector2):
 
 func set_item(item: Item):
 	set_target(item.global_position)
+	item.set_mask(self)
 	current_target = item
 	state_chart.send_event("set_target")
-	set_modulate(Color.WHITE)
+	highlight.visible = false
+	highlight.set_modulate(Color.WHITE)
 	busy = true
 
 func auto_set_item(item: Item):
 	set_item(item)
 	item.auto_pick()
+	auto_pick_start.emit(self)
 
 func _on_moving_state_physics_processing(_delta: float):
 	var direction = nav.get_next_path_position() - global_position
@@ -70,13 +76,13 @@ func _on_area_2d_mouse_entered():
 	if busy:
 		return
 
-	set_modulate(Color.RED)
-	set_scale(Vector2(1.1, 1.1))
+	highlight.visible = true
 
 func _on_area_2d_mouse_exited():
-	if !selected:
-		set_modulate(Color.WHITE)
-	set_scale(Vector2(1, 1))
+	if selected:
+		return
+	
+	highlight.visible = false
 
 func _on_area_2d_input_event(_viewport, event, _shape_idx):
 	if busy:
@@ -91,9 +97,12 @@ func _on_area_2d_input_event(_viewport, event, _shape_idx):
 
 func _on_using_state_exited():
 	current_target.state_chart.send_event("finish_use")
-	finished_use.emit(_check_trait(current_target.applicable_trait))
+	var result = _check_trait(current_target.applicable_trait)
+	finished_use.emit(result)
+	current_target.used_by_mask.visible = false
 	current_target = null
 	busy = false
+	# TODO: display bubble, use result
 
 func _check_trait(trait_to_be_checked: Trait) -> TraitResult:
 	if trait_to_be_checked == good_trait:
@@ -123,7 +132,7 @@ func _get_random_unoccupied_item() -> Item:
 	var unoccupied_items = []
 
 	for item in items:
-		if !item.occupied:
+		if !item.occupied and item.interactable:
 			unoccupied_items.append(item)
 
 	if unoccupied_items.size() == 0:

@@ -1,0 +1,70 @@
+[gd_scene load_steps=11 format=3 uid="uid://1n847udyt1dh"]
+
+[ext_resource type="Texture2D" uid="uid://duf6bbxldwgrp" path="res://Assets/UI/thought_bubble.png" id="1_lvgb7"]
+[ext_resource type="Texture2D" uid="uid://b1irhmr8ltj45" path="res://Assets/Emojis/Neutral/35_thinking face.png" id="2_i2vrb"]
+[ext_resource type="Script" path="res://Character/Thought_bubble.gd" id="2_ypnsi"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nml8h"]
+atlas = ExtResource("1_lvgb7")
+region = Rect2(0, 0, 32, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ywasw"]
+atlas = ExtResource("1_lvgb7")
+region = Rect2(32, 0, 32, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nmkgx"]
+atlas = ExtResource("1_lvgb7")
+region = Rect2(64, 0, 32, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ykk21"]
+atlas = ExtResource("1_lvgb7")
+region = Rect2(96, 0, 32, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eghlp"]
+atlas = ExtResource("1_lvgb7")
+region = Rect2(128, 0, 32, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kil6o"]
+atlas = ExtResource("1_lvgb7")
+region = Rect2(160, 0, 32, 50)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_38r5b"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nml8h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ywasw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nmkgx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ykk21")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eghlp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kil6o")
+}],
+"loop": false,
+"name": &"default",
+"speed": 10.0
+}]
+
+[node name="ThoughtBubble" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_38r5b")
+autoplay = "default"
+frame = 5
+frame_progress = 1.0
+script = ExtResource("2_ypnsi")
+
+[node name="Emoji" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -9)
+scale = Vector2(0.707678, 0.707678)
+texture = ExtResource("2_i2vrb")
+
+[connection signal="animation_finished" from="." to="." method="_on_animation_finished"]
