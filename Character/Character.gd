@@ -10,6 +10,12 @@ enum Trait {
     GARDENING
 }
 
+enum TraitResult {
+	NEUTRAL,
+	GOOD,
+	BAD
+}
+
 @export var good_trait: Trait
 @export var bad_trait: Trait
 
@@ -19,7 +25,8 @@ enum Trait {
 @onready var nav = $NavigationAgent2D
 @onready var state_chart = $StateChart
 
-signal clicked
+signal clicked(character: Character)
+signal finished_use(result: TraitResult)
 
 var current_target: Item = null
 
@@ -66,4 +73,13 @@ func _on_area_2d_input_event(_viewport, event, _shape_idx):
 
 func _on_using_state_exited():
 	current_target.state_chart.send_event("finish_use")
+	finished_use.emit(check_trait(current_target.applicable_trait))
 	current_target = null
+
+func check_trait(trait_to_be_checked: Trait) -> TraitResult:
+	if trait_to_be_checked == good_trait:
+		return TraitResult.GOOD
+	elif trait_to_be_checked == bad_trait:
+		return TraitResult.BAD
+	else:
+		return TraitResult.NEUTRAL

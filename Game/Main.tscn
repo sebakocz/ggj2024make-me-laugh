@@ -1,8 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://cnpvuhye6ru8b"]
+[gd_scene load_steps=16 format=3 uid="uid://cnpvuhye6ru8b"]
 
 [ext_resource type="Script" path="res://Game/Main.gd" id="1_inf3x"]
 [ext_resource type="Script" path="res://Game/Debug.gd" id="2_d8mgm"]
 [ext_resource type="Texture2D" uid="uid://vd73tan5da0" path="res://Assets/Tilesheets/Tileset_32x32_8.png" id="2_hsdkx"]
+[ext_resource type="PackedScene" uid="uid://ckcwtq5q5ccrb" path="res://Game/UI.tscn" id="2_i06w2"]
 [ext_resource type="PackedScene" uid="uid://dc6bqmduefhpy" path="res://Character/Character.tscn" id="3_h5vme"]
 [ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="5_nmonl"]
 [ext_resource type="PackedScene" uid="uid://3f3gobi560dc" path="res://Item/List/Guitar.tscn" id="5_web07"]
@@ -1103,6 +1104,8 @@ source_geometry_group_name = &"navigation"
 [node name="Main" type="Node2D"]
 script = ExtResource("1_inf3x")
 
+[node name="CanvasLayer" parent="." instance=ExtResource("2_i06w2")]
+
 [node name="Debug" type="Node" parent="."]
 script = ExtResource("2_d8mgm")
 
@@ -1135,6 +1138,7 @@ zoom = Vector2(2, 2)
 
 [node name="Character" parent="." instance=ExtResource("3_h5vme")]
 position = Vector2(-165, 37)
+bad_trait = 1
 min_distance = 40.0
 
 [node name="Interactables" type="Node" parent="."]

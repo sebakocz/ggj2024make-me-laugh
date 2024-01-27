@@ -1,0 +1,52 @@
+[gd_scene load_steps=2 format=3 uid="uid://ckcwtq5q5ccrb"]
+
+[ext_resource type="Script" path="res://Game/UI.gd" id="1_ahg80"]
+
+[node name="CanvasLayer" type="CanvasLayer" node_paths=PackedStringArray("value_name", "value_likes", "value_hates", "sprite")]
+script = ExtResource("1_ahg80")
+value_name = NodePath("Panel/GridContainer/Name_Value")
+value_likes = NodePath("Panel/GridContainer/Likes_Value")
+value_hates = NodePath("Panel/GridContainer/Hates_Value")
+sprite = NodePath("Panel/Sprite2D")
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = 1094.0
+offset_top = 51.0
+offset_right = 1338.0
+offset_bottom = 165.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Panel"]
+position = Vector2(46, 41)
+scale = Vector2(28.5, 28.5)
+
+[node name="GridContainer" type="GridContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 23.0
+offset_right = 159.0
+offset_bottom = 100.0
+columns = 2
+
+[node name="Name_Label" type="Label" parent="Panel/GridContainer"]
+layout_mode = 2
+text = "Name:"
+
+[node name="Name_Value" type="Label" parent="Panel/GridContainer"]
+layout_mode = 2
+text = "..."
+
+[node name="Likes_Label" type="Label" parent="Panel/GridContainer"]
+layout_mode = 2
+text = "Likes:"
+
+[node name="Likes_Value" type="Label" parent="Panel/GridContainer"]
+layout_mode = 2
+text = "..."
+
+[node name="Hates_Label" type="Label" parent="Panel/GridContainer"]
+layout_mode = 2
+text = "Hates:"
+
+[node name="Hates_Value" type="Label" parent="Panel/GridContainer"]
+layout_mode = 2
+text = "..."

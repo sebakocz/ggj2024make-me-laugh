@@ -9,7 +9,7 @@ var used_by: Character = null
 
 @onready var state_chart = $StateChart
 
-signal clicked
+signal clicked(item: Item)
 
 func _on_area_2d_mouse_entered():
 	if !clickable or !interactable:
