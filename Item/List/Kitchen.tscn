@@ -1,0 +1,27 @@
+[gd_scene load_steps=6 format=3 uid="uid://bwfykgec8u4t4"]
+
+[ext_resource type="PackedScene" uid="uid://faavjmw2ol2x" path="res://Item/Item.tscn" id="1_chvpx"]
+[ext_resource type="Texture2D" uid="uid://b2lskos1bf141" path="res://Assets/Tilesheets/1_Generic_32x32.png" id="2_66q4r"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eiu7w"]
+atlas = ExtResource("2_66q4r")
+region = Rect2(0, 1810, 64, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sfv4c"]
+size = Vector2(64, 35)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5xgja"]
+size = Vector2(63.5, 61)
+
+[node name="Kitchen" instance=ExtResource("1_chvpx")]
+applicable_trait = 4
+
+[node name="Sprite2D" parent="." index="0"]
+texture = SubResource("AtlasTexture_eiu7w")
+
+[node name="CollisionShape2D" parent="." index="1"]
+shape = SubResource("RectangleShape2D_sfv4c")
+
+[node name="CollisionShape2D" parent="Area2D" index="0"]
+position = Vector2(0.25, -0.5)
+shape = SubResource("RectangleShape2D_5xgja")

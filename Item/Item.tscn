@@ -1,0 +1,73 @@
+[gd_scene load_steps=10 format=3 uid="uid://faavjmw2ol2x"]
+
+[ext_resource type="Script" path="res://Item/Item.gd" id="1_jjo7o"]
+[ext_resource type="Texture2D" uid="uid://sl1u5l04pvrs" path="res://Assets/Tilesheets/6_Music_and_sport_32x32.png" id="2_2ly73"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="3_p7lq5"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="4_3fp5x"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="5_hnc3w"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="6_7ujg8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_suq36"]
+atlas = ExtResource("2_2ly73")
+region = Rect2(290, 177, 26, 58)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_35fot"]
+size = Vector2(62, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dkis8"]
+size = Vector2(62, 64)
+
+[node name="Item" type="StaticBody2D" groups=["item"]]
+script = ExtResource("1_jjo7o")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -5
+texture = SubResource("AtlasTexture_suq36")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 12.5)
+shape = SubResource("RectangleShape2D_35fot")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_dkis8")
+debug_color = Color(0.533333, 0.564706, 0.239216, 0.419608)
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("3_p7lq5")
+
+[node name="CompoundState" type="Node" parent="StateChart"]
+script = ExtResource("4_3fp5x")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("5_hnc3w")
+
+[node name="Transition" type="Node" parent="StateChart/CompoundState/Idle"]
+script = ExtResource("6_7ujg8")
+to = NodePath("../../Using")
+event = &"start_use"
+
+[node name="Using" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("5_hnc3w")
+
+[node name="Transition" type="Node" parent="StateChart/CompoundState/Using"]
+script = ExtResource("6_7ujg8")
+to = NodePath("../../Cooldown")
+event = &"finish_use"
+
+[node name="Cooldown" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("5_hnc3w")
+
+[node name="Transition" type="Node" parent="StateChart/CompoundState/Cooldown"]
+script = ExtResource("6_7ujg8")
+to = NodePath("../../Idle")
+delay_seconds = 5.0
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
+[connection signal="state_entered" from="StateChart/CompoundState/Cooldown" to="." method="_on_cooldown_state_entered"]
+[connection signal="state_exited" from="StateChart/CompoundState/Cooldown" to="." method="_on_cooldown_state_exited"]

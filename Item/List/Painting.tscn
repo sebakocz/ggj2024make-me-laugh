@@ -1,0 +1,27 @@
+[gd_scene load_steps=6 format=3 uid="uid://c8b68n7thou8a"]
+
+[ext_resource type="PackedScene" uid="uid://faavjmw2ol2x" path="res://Item/Item.tscn" id="1_ecxby"]
+[ext_resource type="Texture2D" uid="uid://dkaals0ef7rk2" path="res://Assets/Tilesheets/7_Art_32x32.png" id="2_t523u"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ytb24"]
+atlas = ExtResource("2_t523u")
+region = Rect2(384, 64, 30, 56)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_77eq4"]
+size = Vector2(26, 17)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7tmkq"]
+size = Vector2(30, 56)
+
+[node name="Painting" instance=ExtResource("1_ecxby")]
+
+[node name="Sprite2D" parent="." index="0"]
+texture = SubResource("AtlasTexture_ytb24")
+
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(0, 17.5)
+shape = SubResource("RectangleShape2D_77eq4")
+
+[node name="CollisionShape2D" parent="Area2D" index="0"]
+position = Vector2(0, 0)
+shape = SubResource("RectangleShape2D_7tmkq")

@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://0hu8172py8cw"]
+
+[ext_resource type="PackedScene" uid="uid://faavjmw2ol2x" path="res://Item/Item.tscn" id="1_7x5l2"]
+[ext_resource type="Texture2D" uid="uid://tamdhngcjqco" path="res://Assets/Tilesheets/2_LivingRoom_32x32.png" id="2_coet7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pv0ap"]
+atlas = ExtResource("2_coet7")
+region = Rect2(385, 780, 63, 66)
+
+[node name="Bookshelf" instance=ExtResource("1_7x5l2")]
+applicable_trait = 1
+
+[node name="Sprite2D" parent="." index="0"]
+texture = SubResource("AtlasTexture_pv0ap")
+
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(0, 1)
+
+[node name="CollisionShape2D" parent="Area2D" index="0"]
+position = Vector2(0, 1)

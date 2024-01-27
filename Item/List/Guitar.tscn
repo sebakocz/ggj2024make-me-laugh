@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://3f3gobi560dc"]
+
+[ext_resource type="PackedScene" uid="uid://faavjmw2ol2x" path="res://Item/Item.tscn" id="1_k5nh5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hiufs"]
+size = Vector2(26, 31)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_avf6w"]
+size = Vector2(26, 34)
+
+[node name="Guitar" instance=ExtResource("1_k5nh5")]
+
+[node name="CollisionShape2D" parent="." index="1"]
+shape = SubResource("RectangleShape2D_hiufs")
+
+[node name="CollisionShape2D" parent="Area2D" index="0"]
+position = Vector2(0, 11)
+shape = SubResource("RectangleShape2D_avf6w")
