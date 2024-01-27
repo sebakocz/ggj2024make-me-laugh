@@ -1,14 +1,16 @@
-[gd_scene load_steps=16 format=3 uid="uid://cnpvuhye6ru8b"]
+[gd_scene load_steps=18 format=3 uid="uid://cnpvuhye6ru8b"]
 
 [ext_resource type="Script" path="res://Game/Main.gd" id="1_inf3x"]
 [ext_resource type="Script" path="res://Game/Debug.gd" id="2_d8mgm"]
 [ext_resource type="Texture2D" uid="uid://vd73tan5da0" path="res://Assets/Tilesheets/Tileset_32x32_8.png" id="2_hsdkx"]
 [ext_resource type="PackedScene" uid="uid://ckcwtq5q5ccrb" path="res://Game/UI.tscn" id="2_i06w2"]
-[ext_resource type="PackedScene" uid="uid://dc6bqmduefhpy" path="res://Character/Character.tscn" id="3_h5vme"]
 [ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="5_nmonl"]
 [ext_resource type="PackedScene" uid="uid://3f3gobi560dc" path="res://Item/List/Guitar.tscn" id="5_web07"]
+[ext_resource type="PackedScene" uid="uid://b2sjlxwjbm61p" path="res://Character/List/Adam.tscn" id="6_2bgv6"]
 [ext_resource type="PackedScene" uid="uid://0hu8172py8cw" path="res://Item/List/Bookshelf.tscn" id="6_p7psa"]
 [ext_resource type="PackedScene" uid="uid://c8b68n7thou8a" path="res://Item/List/Painting.tscn" id="7_i13oc"]
+[ext_resource type="PackedScene" uid="uid://ng6m7xf46jni" path="res://Character/List/Alex.tscn" id="7_sav0r"]
+[ext_resource type="PackedScene" uid="uid://e0mv2ctd37i6" path="res://Character/List/Amelia.tscn" id="8_qwsyq"]
 [ext_resource type="PackedScene" uid="uid://cs7elvfxov02e" path="res://Item/List/Microphone.tscn" id="9_mkqcd"]
 [ext_resource type="PackedScene" uid="uid://bwfykgec8u4t4" path="res://Item/List/Kitchen.tscn" id="10_yuyub"]
 [ext_resource type="PackedScene" uid="uid://dtpxkwx1umu0v" path="res://Item/List/Plant.tscn" id="11_0wnyt"]
@@ -1101,27 +1103,27 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(-262, -215, 274, -214, 
 source_geometry_mode = 1
 source_geometry_group_name = &"navigation"
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node2D" node_paths=PackedStringArray("item_state_charts_debug", "character_state_charts_debug")]
 script = ExtResource("1_inf3x")
+item_state_charts_debug = NodePath("Debug/ItemStateChartDebugger")
+character_state_charts_debug = NodePath("Debug/CharacterStateChartDebugger")
 
-[node name="CanvasLayer" parent="." instance=ExtResource("2_i06w2")]
+[node name="UI" parent="." instance=ExtResource("2_i06w2")]
 
 [node name="Debug" type="Node" parent="."]
 script = ExtResource("2_d8mgm")
 
-[node name="StateChartDebugger" parent="Debug" instance=ExtResource("5_nmonl")]
-offset_left = 244.0
+[node name="CharacterStateChartDebugger" parent="Debug" instance=ExtResource("5_nmonl")]
+offset_left = 225.0
 offset_top = -249.0
-offset_right = -1450.0
-offset_bottom = -885.0
-initial_node_to_watch = NodePath("../../Character")
+offset_right = -1447.0
+offset_bottom = -886.0
 
-[node name="StateChartDebugger2" parent="Debug" instance=ExtResource("5_nmonl")]
-offset_left = -466.0
-offset_top = -247.0
-offset_right = -2158.0
-offset_bottom = -887.0
-initial_node_to_watch = NodePath("../../Interactables/Bookshelf")
+[node name="ItemStateChartDebugger" parent="Debug" instance=ExtResource("5_nmonl")]
+offset_left = -475.0
+offset_top = -244.0
+offset_right = -2161.0
+offset_bottom = -888.0
 
 [node name="TileMap" type="TileMap" parent="." groups=["navigation"]]
 z_index = -10
@@ -1136,10 +1138,16 @@ navigation_polygon = SubResource("NavigationPolygon_72thd")
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
 
-[node name="Character" parent="." instance=ExtResource("3_h5vme")]
-position = Vector2(-165, 37)
-bad_trait = 1
-min_distance = 40.0
+[node name="Characters" type="Node" parent="."]
+
+[node name="Adam" parent="Characters" instance=ExtResource("6_2bgv6")]
+position = Vector2(-165, 34)
+
+[node name="Alex" parent="Characters" instance=ExtResource("7_sav0r")]
+position = Vector2(-105, 104)
+
+[node name="Amelia" parent="Characters" instance=ExtResource("8_qwsyq")]
+position = Vector2(113, 5)
 
 [node name="Interactables" type="Node" parent="."]
 
@@ -1160,3 +1168,5 @@ position = Vector2(-193, 115)
 
 [node name="Plant" parent="Interactables" instance=ExtResource("11_0wnyt")]
 position = Vector2(103, 113)
+
+[connection signal="laught_points_changed" from="." to="UI" method="_on_main_laught_points_changed"]

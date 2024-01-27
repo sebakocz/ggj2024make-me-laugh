@@ -3,6 +3,9 @@ class_name Main
 
 var selected_character: Character = null
 
+@export var item_state_charts_debug: MarginContainer
+@export var character_state_charts_debug: MarginContainer
+
 @export var good_bonus: int = 1
 @export var bad_bonus: int = 3
 
@@ -28,6 +31,7 @@ func _on_character_clicked(character):
 	selected_character.selected = true
 	characted_selected.emit(selected_character)
 	_enable_items(true)
+	character_state_charts_debug.debug_node(character)
 
 func _on_character_finished_use(trait_result: Character.TraitResult):
 	match trait_result:
@@ -40,8 +44,12 @@ func _on_character_finished_use(trait_result: Character.TraitResult):
 
 func _on_item_clicked(item):
 	selected_character.set_item(item)
+	selected_character.selected = false
+	selected_character = null
+	characted_selected.emit(null)
 	_enable_items(false)
+	item_state_charts_debug.debug_node(item)
 
 func _enable_items(enable: bool):
 	for item in get_tree().get_nodes_in_group("item"):
-		item.set_clickable(enable)
+		item.set_clickable(item.interactable and enable)

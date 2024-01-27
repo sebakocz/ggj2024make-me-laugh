@@ -5,11 +5,12 @@ class_name Item
 
 var clickable = false
 var interactable = true
-var used_by: Character = null
 
 @onready var state_chart = $StateChart
+@onready var area = $Area2D
 
 signal clicked(item: Item)
+signal refreshed(item: Item) # fix being selected while mouse still on item after cooldown
 
 func _on_area_2d_mouse_entered():
 	if !clickable or !interactable:
@@ -35,6 +36,7 @@ func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int
 			set_modulate(Color.WHITE)
 			set_scale(Vector2(1, 1))
 			state_chart.send_event("start_use")
+			interactable = false
 
 func _on_cooldown_state_entered():
 	set_modulate(Color.GRAY)
