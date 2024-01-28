@@ -22,6 +22,10 @@ enum TraitResult {
 @export var speed: float = 100
 @export var min_distance: float = 40
 
+var stress_level: int = 0
+
+const STRESS_THRESHOLD = 5
+
 @export var thought_bubble: PackedScene
 
 @onready var nav = $NavigationAgent2D
@@ -33,10 +37,19 @@ enum TraitResult {
 signal clicked(character: Character)
 signal finished_use(result: TraitResult)
 signal auto_pick_start(character: Character)
+signal changed_info(character: Character)
 
 var current_target: Item = null
 var selected: bool = false
 var busy = false
+var active = false
+
+func initialize(new_name: String, new_good_trait: Trait, new_bad_trait: Trait):
+	name = new_name
+	good_trait = new_good_trait
+	bad_trait = new_bad_trait
+
+	# how to do animations?
 
 func set_target(target: Vector2):
 	nav.target_position = target
@@ -57,6 +70,7 @@ func auto_set_item(item: Item):
 
 func _on_moving_state_physics_processing(_delta: float):
 	if current_target == null:
+		# bug but I guess a feature, allows player to wait a lil
 		return
 
 	var direction = nav.get_next_path_position() - global_position
@@ -105,6 +119,14 @@ func _on_area_2d_input_event(_viewport, event, _shape_idx):
 func _on_using_state_exited():
 	current_target.state_chart.send_event("finish_use")
 	var result = _check_trait(current_target.applicable_trait)
+
+	# stress penalty
+	if result == TraitResult.BAD:
+		stress_level += 1
+		# TODO: stress level threshold
+	elif result == TraitResult.GOOD:
+		stress_level -= 1 if stress_level > 0 else 0
+	changed_info.emit(self)
 	
 	# thought bubble
 	var bubble = thought_bubble.instantiate()
@@ -115,7 +137,6 @@ func _on_using_state_exited():
 	current_target.used_by_mask.visible = false
 	current_target = null
 	busy = false
-	# TODO: display bubble, use result
 
 func _check_trait(trait_to_be_checked: Trait) -> TraitResult:
 	if trait_to_be_checked == good_trait:
@@ -155,3 +176,6 @@ func _get_random_unoccupied_item() -> Item:
 
 func _on_using_state_entered():
 	current_target.used_by_mask.visible = false
+
+func _on_active_state_entered():
+	active = true

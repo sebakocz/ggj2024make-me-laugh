@@ -1,37 +1,32 @@
 extends CanvasLayer
 
-@export var value_name: Label
-@export var value_likes: Label
-@export var value_hates: Label
-@export var sprite: Sprite2D
-@export var info_panel: Panel
 @export var star_count_label: Label
 @export var money_label: Label
 @export var day_label: Label
+@export var shop: Node
+@export var cast: Node
 
 @onready var laugh_bar = $LaughBar
 @onready var smiley = %Smiley
 
 signal trying_to_buy_item(itemName: String)
+signal trying_to_buy_character(characterIndex: int)
 
-func _ready():
-	get_parent().characted_selected.connect(_on_character_selected)
+# func _on_character_selected(character: Character):
+# 	if character == null:
+# 		value_name.text = ""
+# 		value_likes.text = ""
+# 		value_hates.text = ""
+# 		sprite.texture = null
+# 		info_panel.visible = false
+# 		return
 
-func _on_character_selected(character: Character):
-	if character == null:
-		value_name.text = ""
-		value_likes.text = ""
-		value_hates.text = ""
-		sprite.texture = null
-		info_panel.visible = false
-		return
-
-	info_panel.visible = true
-	value_name.text = character.name
-	value_likes.text = Character.Trait.keys()[character.good_trait].to_lower()
-	value_hates.text = Character.Trait.keys()[character.bad_trait].to_lower()
-	sprite.texture = character.get_node("AnimatedSprite2D").sprite_frames.get_frame_texture("Idle", 0) # whack
-	sprite.scale = Vector2(1.8, 1.8) # idk why the the sprite size explodes - this is a fix
+# 	info_panel.visible = true
+# 	value_name.text = character.name
+# 	value_likes.text = Character.Trait.keys()[character.good_trait].to_lower()
+# 	value_hates.text = Character.Trait.keys()[character.bad_trait].to_lower()
+# 	sprite.texture = character.get_node("AnimatedSprite2D").sprite_frames.get_frame_texture("Idle", 0) # whack
+# 	sprite.scale = Vector2(1.8, 1.8) # idk why the the sprite size explodes - this is a fix
 
 func _on_main_laught_points_changed(points):
 	var tween = get_tree().create_tween()
@@ -83,3 +78,55 @@ func _on_main_day_changed(day: int):
 	day_label.text = "Day " + str(day)
 	var anim = day_label.get_node("AnimationPlayer")
 	anim.play("Bump")
+
+func _on_main_bought_item(item):
+	# find the item in the shop
+	var item_node = shop.get_node(item)
+	# transparent tween
+	var tween = create_tween()
+	tween.tween_property(item_node, "modulate:a", 0, .6).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	await tween.finished
+	item_node.queue_free()
+
+func _on_main_characters_changed(characters: Array):
+	_update_character_info(characters)
+
+func _update_character_info(characters: Array):
+	# update cast info
+	for i in range(characters.size()):
+		var character = characters[i]
+		var cast_character = cast.get_child(i)
+		var stress_string = ""
+		for j in range(character.stress_level):
+			stress_string += "- "
+		cast_character.get_node("GridContainer").get_node("Name_Value").text = character.name
+		var current_stress_string = cast_character.get_node("GridContainer").get_node("Stress_Value").text
+		if current_stress_string.length() > stress_string.length():
+			# red feedback
+			var tween = create_tween()
+			tween.tween_property(cast_character, "modulate", Color.GREEN, .15)
+			tween.tween_property(cast_character, "modulate", Color.WHITE, .15)
+			pass
+		elif current_stress_string.length() < stress_string.length():
+			# green feedback
+			var tween = create_tween()
+			tween.tween_property(cast_character, "modulate", Color.RED, .15)
+			tween.tween_property(cast_character, "modulate", Color.WHITE, .15)
+			pass
+		cast_character.get_node("GridContainer").get_node("Stress_Value").text = stress_string
+		cast_character.get_node("GridContainer").get_node("Likes_Value").text = Character.Trait.keys()[character.good_trait].to_lower()
+		cast_character.get_node("GridContainer").get_node("Hates_Value").text = Character.Trait.keys()[character.bad_trait].to_lower()
+		cast_character.get_node("Sprite2D").texture = character.get_node("AnimatedSprite2D").sprite_frames.get_frame_texture("Idle", 0) # whack
+		cast_character.get_node("Sprite2D").scale = Vector2(1.8, 1.8) # idk why the the sprite size explodes - this is a fix
+
+func _on_character_1_gui_input(event):
+	if event is InputEventMouseButton:
+		trying_to_buy_character.emit(0)
+
+func _on_character_2_gui_input(event):
+	if event is InputEventMouseButton:
+		trying_to_buy_character.emit(1)
+
+func _on_character_3_gui_input(event):
+	if event is InputEventMouseButton:
+		trying_to_buy_character.emit(2)

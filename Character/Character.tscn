@@ -1,4 +1,4 @@
-[gd_scene load_steps=66 format=3 uid="uid://dc6bqmduefhpy"]
+[gd_scene load_steps=85 format=3 uid="uid://dc6bqmduefhpy"]
 
 [ext_resource type="Texture2D" uid="uid://baqcpbquym06p" path="res://Assets/Characters/Alex/Alex_idle_anim_32x32.png" id="1_62yxv"]
 [ext_resource type="Script" path="res://Character/Character.gd" id="1_a58sx"]
@@ -13,6 +13,11 @@
 [ext_resource type="Script" path="res://addons/godot_state_charts/animation_tree_state.gd" id="9_1ppwh"]
 [ext_resource type="Texture2D" uid="uid://dm41452pgyrkp" path="res://Assets/UI/target_character.png" id="11_yk30n"]
 [ext_resource type="Texture2D" uid="uid://kmbgn2l3j84v" path="res://Assets/UI/speech_bubble.png" id="13_wnbxx"]
+[ext_resource type="Texture2D" uid="uid://sddwt42x6d5t" path="res://Assets/UI/taskless.png" id="14_2qncv"]
+[ext_resource type="Script" path="res://Character/BoredBubble.gd" id="14_fk0yj"]
+[ext_resource type="Texture2D" uid="uid://ccmpucoqt7xxx" path="res://Assets/UI/stressed.png" id="15_8mhs1"]
+[ext_resource type="Script" path="res://Character/TasklessBubble.gd" id="15_y8ecq"]
+[ext_resource type="Script" path="res://Character/StressedBubble.gd" id="18_xmb2a"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6dchr"]
 radius = 3.0
@@ -466,13 +471,113 @@ states/Start/position = Vector2(93.5, 99.75)
 transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_u4dgr"), "Idle", "Move", SubResource("AnimationNodeStateMachineTransition_jopto"), "Move", "Idle", SubResource("AnimationNodeStateMachineTransition_55esx")]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7elrd"]
-size = Vector2(20, 42)
+size = Vector2(28, 40)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ljoxb"]
 bg_color = Color(0.298039, 0.690196, 0.223529, 0.282353)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mmio0"]
 bg_color = Color(0.4, 0.678431, 0.258824, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xk2a3"]
+atlas = ExtResource("14_2qncv")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q1fgb"]
+atlas = ExtResource("14_2qncv")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4upbl"]
+atlas = ExtResource("14_2qncv")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8l3i1"]
+atlas = ExtResource("14_2qncv")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l6hxh"]
+atlas = ExtResource("14_2qncv")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ht82x"]
+atlas = ExtResource("14_2qncv")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e0i68"]
+atlas = ExtResource("14_2qncv")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w3cyh"]
+atlas = ExtResource("14_2qncv")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_37gkf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xk2a3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q1fgb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4upbl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8l3i1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l6hxh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ht82x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e0i68")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w3cyh")
+}],
+"loop": false,
+"name": &"default",
+"speed": 8.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6x7og"]
+atlas = ExtResource("15_8mhs1")
+region = Rect2(0, 0, 31, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s21hh"]
+atlas = ExtResource("15_8mhs1")
+region = Rect2(31, 0, 31, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2h32q"]
+atlas = ExtResource("15_8mhs1")
+region = Rect2(62, 0, 31, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ygpe"]
+atlas = ExtResource("15_8mhs1")
+region = Rect2(93, 0, 31, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_k5vwv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6x7og")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s21hh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2h32q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4ygpe")
+}],
+"loop": false,
+"name": &"default",
+"speed": 8.0
+}]
 
 [node name="Character" type="CharacterBody2D" groups=["character"]]
 script = ExtResource("1_a58sx")
@@ -515,63 +620,80 @@ debug_color = Color(0.533333, 0.564706, 0.219608, 0.419608)
 [node name="StateChart" type="Node" parent="."]
 script = ExtResource("3_rkn5k")
 
-[node name="ParallelState" type="Node" parent="StateChart"]
+[node name="CompoundState" type="Node" parent="StateChart"]
+script = ExtResource("4_d3qsh")
+initial_state = NodePath("Inactive")
+
+[node name="Active" type="Node" parent="StateChart/CompoundState"]
 script = ExtResource("5_sln42")
 
-[node name="Actions" type="Node" parent="StateChart/ParallelState"]
+[node name="Actions" type="Node" parent="StateChart/CompoundState/Active"]
 script = ExtResource("4_d3qsh")
 initial_state = NodePath("Idle")
 
-[node name="Idle" type="Node" parent="StateChart/ParallelState/Actions"]
+[node name="Idle" type="Node" parent="StateChart/CompoundState/Active/Actions"]
 script = ExtResource("5_ffq0e")
 
-[node name="Manual Target" type="Node" parent="StateChart/ParallelState/Actions/Idle"]
+[node name="Manual Target" type="Node" parent="StateChart/CompoundState/Active/Actions/Idle"]
 script = ExtResource("6_i6iwk")
 to = NodePath("../../Moving")
 event = &"set_target"
 
-[node name="Auto Target" type="Node" parent="StateChart/ParallelState/Actions/Idle"]
+[node name="Auto Target" type="Node" parent="StateChart/CompoundState/Active/Actions/Idle"]
 script = ExtResource("6_i6iwk")
 to = NodePath("../../Moving")
 delay_seconds = 10.0
 
-[node name="Moving" type="Node" parent="StateChart/ParallelState/Actions"]
+[node name="Moving" type="Node" parent="StateChart/CompoundState/Active/Actions"]
 script = ExtResource("5_ffq0e")
 
-[node name="Reached Target" type="Node" parent="StateChart/ParallelState/Actions/Moving"]
+[node name="Reached Target" type="Node" parent="StateChart/CompoundState/Active/Actions/Moving"]
 script = ExtResource("6_i6iwk")
 to = NodePath("../../Using")
 event = &"reached_target"
 
-[node name="Using" type="Node" parent="StateChart/ParallelState/Actions"]
+[node name="Using" type="Node" parent="StateChart/CompoundState/Active/Actions"]
 script = ExtResource("5_ffq0e")
 
-[node name="Finished Using" type="Node" parent="StateChart/ParallelState/Actions/Using"]
+[node name="Finished Using" type="Node" parent="StateChart/CompoundState/Active/Actions/Using"]
 script = ExtResource("6_i6iwk")
 to = NodePath("../../Idle")
 delay_seconds = 3.0
 
-[node name="Animations" type="Node" parent="StateChart/ParallelState"]
+[node name="Animations" type="Node" parent="StateChart/CompoundState/Active"]
 script = ExtResource("4_d3qsh")
 initial_state = NodePath("Idle")
 
-[node name="Idle" type="Node" parent="StateChart/ParallelState/Animations"]
+[node name="Idle" type="Node" parent="StateChart/CompoundState/Active/Animations"]
 script = ExtResource("9_1ppwh")
-animation_tree = NodePath("../../../../AnimationTree")
+animation_tree = NodePath("../../../../../AnimationTree")
 
-[node name="Set Target" type="Node" parent="StateChart/ParallelState/Animations/Idle"]
+[node name="Set Target" type="Node" parent="StateChart/CompoundState/Active/Animations/Idle"]
 script = ExtResource("6_i6iwk")
 to = NodePath("../../Move")
 event = &"set_target"
 
-[node name="Move" type="Node" parent="StateChart/ParallelState/Animations"]
+[node name="Move" type="Node" parent="StateChart/CompoundState/Active/Animations"]
 script = ExtResource("9_1ppwh")
-animation_tree = NodePath("../../../../AnimationTree")
+animation_tree = NodePath("../../../../../AnimationTree")
 
-[node name="Reached Target" type="Node" parent="StateChart/ParallelState/Animations/Move"]
+[node name="Reached Target" type="Node" parent="StateChart/CompoundState/Active/Animations/Move"]
 script = ExtResource("6_i6iwk")
 to = NodePath("../../Idle")
 event = &"reached_target"
+
+[node name="Inactive" type="Node" parent="StateChart/CompoundState/Active"]
+script = ExtResource("6_i6iwk")
+to = NodePath("../../Inactive")
+event = &"inactivated"
+
+[node name="Inactive" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("5_ffq0e")
+
+[node name="Activate" type="Node" parent="StateChart/CompoundState/Inactive"]
+script = ExtResource("6_i6iwk")
+to = NodePath("../../Active")
+event = &"activated"
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
 visible = false
@@ -605,13 +727,48 @@ scale = Vector2(0.833558, 0.833558)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "I'm busy!"
 
+[node name="BoredBubble" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(39, -18)
+scale = Vector2(0.875, 0.875)
+texture = ExtResource("13_wnbxx")
+script = ExtResource("14_fk0yj")
+
+[node name="Label" type="Label" parent="BoredBubble"]
+offset_left = -21.4286
+offset_top = -9.0
+offset_right = 35.5714
+offset_bottom = 7.0
+scale = Vector2(0.833558, 0.833558)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "bored..."
+
+[node name="TasklessBubble" type="AnimatedSprite2D" parent="."]
+position = Vector2(24, -21)
+sprite_frames = SubResource("SpriteFrames_37gkf")
+frame_progress = 1.0
+script = ExtResource("15_y8ecq")
+
+[node name="StressedBubble" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(26, -21)
+sprite_frames = SubResource("SpriteFrames_k5vwv")
+frame = 3
+frame_progress = 1.0
+script = ExtResource("18_xmb2a")
+
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
-[connection signal="taken" from="StateChart/ParallelState/Actions/Idle/Auto Target" to="." method="_on_auto_target_taken"]
-[connection signal="state_physics_processing" from="StateChart/ParallelState/Actions/Moving" to="." method="_on_moving_state_physics_processing"]
-[connection signal="state_entered" from="StateChart/ParallelState/Actions/Using" to="." method="_on_using_state_entered"]
-[connection signal="state_entered" from="StateChart/ParallelState/Actions/Using" to="ProgressBar" method="_on_using_state_entered"]
-[connection signal="state_exited" from="StateChart/ParallelState/Actions/Using" to="." method="_on_using_state_exited"]
-[connection signal="state_exited" from="StateChart/ParallelState/Actions/Using" to="ProgressBar" method="_on_using_state_exited"]
-[connection signal="state_physics_processing" from="StateChart/ParallelState/Actions/Using" to="ProgressBar" method="_on_using_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/CompoundState/Active" to="." method="_on_active_state_entered"]
+[connection signal="state_entered" from="StateChart/CompoundState/Active" to="TasklessBubble" method="_on_active_state_entered"]
+[connection signal="state_exited" from="StateChart/CompoundState/Active/Actions/Idle" to="TasklessBubble" method="_on_idle_state_exited"]
+[connection signal="taken" from="StateChart/CompoundState/Active/Actions/Idle/Auto Target" to="." method="_on_auto_target_taken"]
+[connection signal="taken" from="StateChart/CompoundState/Active/Actions/Idle/Auto Target" to="BoredBubble" method="_on_auto_target_taken"]
+[connection signal="state_physics_processing" from="StateChart/CompoundState/Active/Actions/Moving" to="." method="_on_moving_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/CompoundState/Active/Actions/Using" to="." method="_on_using_state_entered"]
+[connection signal="state_entered" from="StateChart/CompoundState/Active/Actions/Using" to="ProgressBar" method="_on_using_state_entered"]
+[connection signal="state_exited" from="StateChart/CompoundState/Active/Actions/Using" to="." method="_on_using_state_exited"]
+[connection signal="state_exited" from="StateChart/CompoundState/Active/Actions/Using" to="ProgressBar" method="_on_using_state_exited"]
+[connection signal="state_physics_processing" from="StateChart/CompoundState/Active/Actions/Using" to="ProgressBar" method="_on_using_state_physics_processing"]
+[connection signal="taken" from="StateChart/CompoundState/Active/Inactive" to="StressedBubble" method="_on_inactive_taken"]

@@ -9,13 +9,21 @@ var selected_character: Character = null
 @export var good_bonus: int = 5
 @export var bad_bonus: int = 20
 
+@export var characters_node: Node
+
+@export var character_scene: PackedScene
+
 var laugh_stars: int = 0
 var laugh_points = 0
 
 var money = 1000
 @export var item_cost = 100
 
+@export var character_cost = 100
+
 var day = 1
+
+const MAX_CHARACTERS = 3
 
 @onready var interactables = $Interactables
 
@@ -23,18 +31,51 @@ signal laught_points_changed(points: int)
 signal laught_stars_changed(stars: int)
 signal characted_selected(character: Character)
 signal money_changed(money: int)
+signal bought_item(item: String)
 signal day_changed(day: int)
+signal characters_changed(characters: Array)
 
 func _ready():
 	for character in get_tree().get_nodes_in_group("character"):
 		character.connect("clicked", _on_character_clicked)
 		character.connect("finished_use", _on_character_finished_use)
 		character.connect("auto_pick_start", _clear_character)
+		character.connect("changed_info", _on_character_changed_info)
 	
 	for item in get_tree().get_nodes_in_group("item"):
 		item.connect("clicked", _on_item_clicked)
 		item.connect("finished_cooldown", _on_item_finished_cooldown)
 		# item.connect("auto_picked", _on_item_clicked) # not needed
+	
+	_populate_cast()
+
+func _on_character_changed_info(_character: Character):
+	characters_changed.emit(characters_node.get_children())
+
+func _populate_cast():
+	# check how many we have
+	if characters_node.get_children().size() >= MAX_CHARACTERS:
+		return
+	
+	# generate random character
+	var new_character = character_scene.instantiate()
+	new_character.initialize(
+		"Adam" + str(randf()),
+		Character.Trait.COOKING,
+		Character.Trait.GUITAR,
+	)
+	new_character.connect("clicked", _on_character_clicked)
+	new_character.connect("finished_use", _on_character_finished_use)
+	new_character.connect("auto_pick_start", _clear_character)
+	new_character.connect("changed_info", _on_character_changed_info)
+	characters_node.add_child(new_character)
+
+	_populate_cast()
+
+	# move away
+	new_character.position = Vector2(1000, 1000)
+
+	characters_changed.emit(characters_node.get_children())
 
 func _on_item_finished_cooldown(item):
 	if selected_character == null:
@@ -105,6 +146,9 @@ func _on_ui_trying_to_buy_item(itemName: String):
 	
 	money -= item_cost
 	money_changed.emit(money)
+	bought_item.emit(itemName)
+
+	deselect_character()
 
 	# find by name in interactables, activate it
 	for interactable in interactables.get_children():
@@ -117,3 +161,30 @@ func _on_ui_trying_to_buy_item(itemName: String):
 func _on_day_timer_timeout():
 	day += 1
 	day_changed.emit(day)
+
+func _on_ui_trying_to_buy_character(characterIndex: int):
+	if characters_node.get_children()[characterIndex].active:
+		return
+
+	if money < character_cost:
+		return
+	
+	money -= character_cost
+	money_changed.emit(money)
+
+	# find by id in characters_node, activate it
+	var character = characters_node.get_children()[characterIndex]
+	var random_vector_around = Vector2(randf(), randf()).normalized() * 80
+	character.position = random_vector_around
+	character.state_chart.send_event("activated")
+
+	deselect_character()
+
+func deselect_character():
+	if selected_character != null:
+		selected_character.highlight.set_modulate(Color.WHITE)
+		selected_character.highlight.visible = false
+		selected_character.selected = false
+		selected_character = null
+		characted_selected.emit(null)
+		_enable_items(false)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://cnpvuhye6ru8b"]
+[gd_scene load_steps=34 format=3 uid="uid://cnpvuhye6ru8b"]
 
 [ext_resource type="Script" path="res://Game/Main.gd" id="1_inf3x"]
 [ext_resource type="Script" path="res://Game/Debug.gd" id="2_d8mgm"]
@@ -9,9 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://b2sjlxwjbm61p" path="res://Character/List/Adam.tscn" id="6_2bgv6"]
 [ext_resource type="PackedScene" uid="uid://0hu8172py8cw" path="res://Item/List/Bookshelf.tscn" id="6_p7psa"]
 [ext_resource type="PackedScene" uid="uid://c8b68n7thou8a" path="res://Item/List/Painting.tscn" id="7_i13oc"]
-[ext_resource type="PackedScene" uid="uid://ng6m7xf46jni" path="res://Character/List/Alex.tscn" id="7_sav0r"]
 [ext_resource type="Texture2D" uid="uid://b2lskos1bf141" path="res://Assets/Tilesheets/1_Generic_32x32.png" id="8_17btl"]
-[ext_resource type="PackedScene" uid="uid://e0mv2ctd37i6" path="res://Character/List/Amelia.tscn" id="8_qwsyq"]
 [ext_resource type="PackedScene" uid="uid://cs7elvfxov02e" path="res://Item/List/Microphone.tscn" id="9_mkqcd"]
 [ext_resource type="PackedScene" uid="uid://bwfykgec8u4t4" path="res://Item/List/Kitchen.tscn" id="10_yuyub"]
 [ext_resource type="PackedScene" uid="uid://dtpxkwx1umu0v" path="res://Item/List/Plant.tscn" id="11_0wnyt"]
@@ -17335,12 +17333,15 @@ region = Rect2(224, 14, 32, 48)
 atlas = SubResource("CompressedTexture2D_0e3ay")
 region = Rect2(288, 12, 32, 50)
 
-[node name="Main" type="Node2D" node_paths=PackedStringArray("item_state_charts_debug", "character_state_charts_debug")]
+[node name="Main" type="Node2D" node_paths=PackedStringArray("item_state_charts_debug", "character_state_charts_debug", "characters_node")]
 script = ExtResource("1_inf3x")
 item_state_charts_debug = NodePath("Debug/ItemStateChartDebugger")
 character_state_charts_debug = NodePath("Debug/CharacterStateChartDebugger")
+characters_node = NodePath("Characters")
+character_scene = ExtResource("6_2bgv6")
 
 [node name="DayTimer" type="Timer" parent="."]
+wait_time = 10.0
 autostart = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -17364,17 +17365,6 @@ offset_right = -2210.0
 offset_bottom = -1620.0
 
 [node name="Characters" type="Node" parent="."]
-
-[node name="Adam" parent="Characters" instance=ExtResource("6_2bgv6")]
-position = Vector2(117, 58)
-collision_layer = 1
-
-[node name="Alex" parent="Characters" instance=ExtResource("7_sav0r")]
-position = Vector2(-95.5, 26)
-collision_layer = 1
-
-[node name="Amelia" parent="Characters" instance=ExtResource("8_qwsyq")]
-position = Vector2(74, -59)
 
 [node name="Interactables" type="Node" parent="."]
 
@@ -17471,6 +17461,8 @@ texture = SubResource("AtlasTexture_lfc30")
 stream = ExtResource("17_l46t8")
 script = ExtResource("18_jliyl")
 
+[connection signal="bought_item" from="." to="UI" method="_on_main_bought_item"]
+[connection signal="characters_changed" from="." to="UI" method="_on_main_characters_changed"]
 [connection signal="day_changed" from="." to="UI" method="_on_main_day_changed"]
 [connection signal="laught_points_changed" from="." to="UI" method="_on_main_laught_points_changed"]
 [connection signal="laught_points_changed" from="." to="Audience" method="_on_main_laught_points_changed"]
@@ -17478,4 +17470,5 @@ script = ExtResource("18_jliyl")
 [connection signal="laught_stars_changed" from="." to="UI" method="_on_main_laught_stars_changed"]
 [connection signal="money_changed" from="." to="UI" method="_on_main_money_changed"]
 [connection signal="timeout" from="DayTimer" to="." method="_on_day_timer_timeout"]
+[connection signal="trying_to_buy_character" from="UI" to="." method="_on_ui_trying_to_buy_character"]
 [connection signal="trying_to_buy_item" from="UI" to="." method="_on_ui_trying_to_buy_item"]
