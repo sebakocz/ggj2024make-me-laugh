@@ -17340,6 +17340,9 @@ script = ExtResource("1_inf3x")
 item_state_charts_debug = NodePath("Debug/ItemStateChartDebugger")
 character_state_charts_debug = NodePath("Debug/CharacterStateChartDebugger")
 
+[node name="DayTimer" type="Timer" parent="."]
+autostart = true
+
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
 
@@ -17375,7 +17378,7 @@ position = Vector2(74, -59)
 
 [node name="Interactables" type="Node" parent="."]
 
-[node name="Bookshelf" parent="Interactables" instance=ExtResource("6_p7psa")]
+[node name="Reading" parent="Interactables" instance=ExtResource("6_p7psa")]
 position = Vector2(130, -173)
 
 [node name="Guitar" parent="Interactables" instance=ExtResource("5_web07")]
@@ -17384,13 +17387,13 @@ position = Vector2(203, -42)
 [node name="Painting" parent="Interactables" instance=ExtResource("7_i13oc")]
 position = Vector2(-19, -40)
 
-[node name="Microphone" parent="Interactables" instance=ExtResource("9_mkqcd")]
+[node name="Karaoke" parent="Interactables" instance=ExtResource("9_mkqcd")]
 position = Vector2(176, 86)
 
-[node name="Kitchen" parent="Interactables" instance=ExtResource("10_yuyub")]
+[node name="Cooking" parent="Interactables" instance=ExtResource("10_yuyub")]
 position = Vector2(-225, -31)
 
-[node name="Plant" parent="Interactables" instance=ExtResource("11_0wnyt")]
+[node name="Gardening" parent="Interactables" instance=ExtResource("11_0wnyt")]
 position = Vector2(27, 124)
 
 [node name="TileMap" type="TileMap" parent="." groups=["navigation"]]
@@ -17468,6 +17471,11 @@ texture = SubResource("AtlasTexture_lfc30")
 stream = ExtResource("17_l46t8")
 script = ExtResource("18_jliyl")
 
+[connection signal="day_changed" from="." to="UI" method="_on_main_day_changed"]
 [connection signal="laught_points_changed" from="." to="UI" method="_on_main_laught_points_changed"]
 [connection signal="laught_points_changed" from="." to="Audience" method="_on_main_laught_points_changed"]
 [connection signal="laught_points_changed" from="." to="LaughTrack" method="_on_main_laught_points_changed"]
+[connection signal="laught_stars_changed" from="." to="UI" method="_on_main_laught_stars_changed"]
+[connection signal="money_changed" from="." to="UI" method="_on_main_money_changed"]
+[connection signal="timeout" from="DayTimer" to="." method="_on_day_timer_timeout"]
+[connection signal="trying_to_buy_item" from="UI" to="." method="_on_ui_trying_to_buy_item"]

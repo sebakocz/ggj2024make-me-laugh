@@ -4,8 +4,9 @@ class_name Item
 @export var applicable_trait: Character.Trait
 
 var clickable = false
-var interactable = true
+var interactable = false
 var occupied = false
+var bought = false
 
 @onready var state_chart = $StateChart
 @onready var area = $Area2D

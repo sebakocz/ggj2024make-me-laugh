@@ -2,6 +2,22 @@ extends Node
 
 var move_by = 50
 
+func _ready():
+	_shuffle_audience()
+	animate_audience()
+
+func _shuffle_audience():
+	var audience_members = get_children()
+	# swap audience members randomly
+	for person in audience_members:
+		var random_person = audience_members[randi() % audience_members.size()]
+		var person_pos = person.position
+		var random_person_pos = random_person.position
+		person.position = random_person_pos
+		random_person.position = person_pos
+		person.z_index = person.position.y
+		random_person.z_index = random_person.position.y
+
 func animate_audience():
 	var audience_members = get_children()
 	for audience_member in audience_members:

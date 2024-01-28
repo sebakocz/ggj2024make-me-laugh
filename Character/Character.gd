@@ -28,6 +28,7 @@ enum TraitResult {
 @onready var state_chart = $StateChart
 @onready var animation_tree = $AnimationTree
 @onready var highlight = $Highlight
+@onready var busy_bubble = $BusyBubble
 
 signal clicked(character: Character)
 signal finished_use(result: TraitResult)
@@ -55,6 +56,9 @@ func auto_set_item(item: Item):
 	auto_pick_start.emit(self)
 
 func _on_moving_state_physics_processing(_delta: float):
+	if current_target == null:
+		return
+
 	var direction = nav.get_next_path_position() - global_position
 	var distance = current_target.global_position - global_position
 	
@@ -85,10 +89,13 @@ func _on_area_2d_mouse_exited():
 	highlight.visible = false
 
 func _on_area_2d_input_event(_viewport, event, _shape_idx):
-	if busy:
-		return
-
 	if event is InputEventMouseButton:
+		if busy:
+			busy_bubble.visible = true
+			await get_tree().create_timer(1).timeout
+			busy_bubble.visible = false
+			return
+
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			emit_signal("clicked", self)
 

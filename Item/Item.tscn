@@ -31,6 +31,7 @@ region = Rect2(736, 1, 32, 63)
 script = ExtResource("1_jjo7o")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.196078)
 z_index = -5
 texture = SubResource("AtlasTexture_suq36")
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=65 format=3 uid="uid://dc6bqmduefhpy"]
+[gd_scene load_steps=66 format=3 uid="uid://dc6bqmduefhpy"]
 
 [ext_resource type="Texture2D" uid="uid://baqcpbquym06p" path="res://Assets/Characters/Alex/Alex_idle_anim_32x32.png" id="1_62yxv"]
 [ext_resource type="Script" path="res://Character/Character.gd" id="1_a58sx"]
@@ -12,9 +12,10 @@
 [ext_resource type="Script" path="res://Character/ProgressBar.gd" id="8_hrbt1"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/animation_tree_state.gd" id="9_1ppwh"]
 [ext_resource type="Texture2D" uid="uid://dm41452pgyrkp" path="res://Assets/UI/target_character.png" id="11_yk30n"]
+[ext_resource type="Texture2D" uid="uid://kmbgn2l3j84v" path="res://Assets/UI/speech_bubble.png" id="13_wnbxx"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6dchr"]
-radius = 5.0
+radius = 3.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vs3u5"]
 atlas = ExtResource("1_62yxv")
@@ -479,7 +480,7 @@ min_distance = 50.0
 thought_bubble = ExtResource("2_3cg4s")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 27)
+position = Vector2(0, 29)
 shape = SubResource("CircleShape2D_6dchr")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -588,6 +589,21 @@ script = ExtResource("8_hrbt1")
 visible = false
 position = Vector2(0, 8)
 texture = ExtResource("11_yk30n")
+
+[node name="BusyBubble" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(39, -18)
+scale = Vector2(0.875, 0.875)
+texture = ExtResource("13_wnbxx")
+
+[node name="Label" type="Label" parent="BusyBubble"]
+offset_left = -26.2857
+offset_top = -9.14286
+offset_right = 37.7143
+offset_bottom = 6.85714
+scale = Vector2(0.833558, 0.833558)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "I'm busy!"
 
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]

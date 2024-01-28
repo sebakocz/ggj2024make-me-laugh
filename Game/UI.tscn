@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://ckcwtq5q5ccrb"]
+[gd_scene load_steps=18 format=3 uid="uid://ckcwtq5q5ccrb"]
 
 [ext_resource type="Script" path="res://Game/UI.gd" id="1_ahg80"]
 [ext_resource type="Texture2D" uid="uid://c770rqfivasng" path="res://Assets/Emojis/Good/7_rolling on the floor laughing.png" id="2_2q2rf"]
+[ext_resource type="Theme" uid="uid://d06pgxnaws715" path="res://Game/UI.tres" id="3_dispi"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lbkyi"]
 
@@ -39,13 +40,107 @@ _data = {
 "Smiley_Impulse": SubResource("Animation_872l1")
 }
 
-[node name="UI" type="CanvasLayer" node_paths=PackedStringArray("value_name", "value_likes", "value_hates", "sprite", "info_panel")]
+[sub_resource type="Animation" id="Animation_8ifbw"]
+resource_name = "Bump"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.6, 1.6), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ak4km"]
+resource_name = "Pulse"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.2, 1.2), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_j2e02"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1.2, 1.2)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pn44g"]
+_data = {
+"Bump": SubResource("Animation_8ifbw"),
+"Pulse": SubResource("Animation_ak4km"),
+"RESET": SubResource("Animation_j2e02")
+}
+
+[sub_resource type="Animation" id="Animation_80eis"]
+resource_name = "Bump"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.12, 1.12), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_nuvvc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1.12, 1.12)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_al572"]
+_data = {
+"Bump": SubResource("Animation_80eis"),
+"RESET": SubResource("Animation_nuvvc")
+}
+
+[node name="UI" type="CanvasLayer" node_paths=PackedStringArray("value_name", "value_likes", "value_hates", "sprite", "info_panel", "star_count_label", "money_label", "day_label")]
 script = ExtResource("1_ahg80")
 value_name = NodePath("Panel/GridContainer/Name_Value")
 value_likes = NodePath("Panel/GridContainer/Likes_Value")
 value_hates = NodePath("Panel/GridContainer/Hates_Value")
 sprite = NodePath("Panel/Sprite2D")
 info_panel = NodePath("Panel")
+star_count_label = NodePath("StarCount")
+money_label = NodePath("MoneyCount")
+day_label = NodePath("DayCount")
 
 [node name="LaughBar" type="ProgressBar" parent="."]
 anchors_preset = -1
@@ -75,11 +170,11 @@ libraries = {
 }
 
 [node name="Panel" type="Panel" parent="."]
-visible = false
-offset_left = 468.0
-offset_top = 162.0
-offset_right = 831.0
-offset_bottom = 313.0
+offset_left = 36.0
+offset_top = 100.0
+offset_right = 400.0
+offset_bottom = 289.0
+theme = ExtResource("3_dispi")
 
 [node name="Sprite2D" type="Sprite2D" parent="Panel"]
 position = Vector2(46, 59)
@@ -95,30 +190,251 @@ columns = 2
 
 [node name="Name_Label" type="Label" parent="Panel/GridContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 32
 text = "Name:"
 
 [node name="Name_Value" type="Label" parent="Panel/GridContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 32
 text = "..."
 
+[node name="Stress_Label" type="Label" parent="Panel/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "Stress:"
+
+[node name="Stress_Value" type="Label" parent="Panel/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "- - - -"
+
 [node name="Likes_Label" type="Label" parent="Panel/GridContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 32
 text = "Likes:"
 
 [node name="Likes_Value" type="Label" parent="Panel/GridContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 32
 text = "..."
 
 [node name="Hates_Label" type="Label" parent="Panel/GridContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 32
 text = "Hates:"
 
 [node name="Hates_Value" type="Label" parent="Panel/GridContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 32
 text = "..."
+
+[node name="StarCount" type="Label" parent="."]
+visible = false
+anchors_preset = -1
+anchor_left = 0.747
+anchor_top = 0.048
+anchor_right = 0.747
+anchor_bottom = 0.048
+offset_left = -40.2401
+offset_top = -32.84
+offset_right = 27.7599
+offset_bottom = 31.16
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.2, 1.2)
+pivot_offset = Vector2(34, 34)
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 64
+text = "x1"
+metadata/_edit_use_anchors_ = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="StarCount"]
+libraries = {
+"": SubResource("AnimationLibrary_pn44g")
+}
+autoplay = "Pulse"
+
+[node name="MoneyCount" type="Label" parent="."]
+anchors_preset = -1
+anchor_left = 0.0302083
+anchor_right = 0.000520833
+offset_left = 1677.0
+offset_top = 17.0
+offset_right = 1890.0
+offset_bottom = 65.0
+scale = Vector2(1.12, 1.12)
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 48
+text = "$1000"
+horizontal_alignment = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MoneyCount"]
+libraries = {
+"": SubResource("AnimationLibrary_al572")
+}
+
+[node name="DayCount" type="Label" parent="."]
+offset_left = 17.0
+offset_top = 18.0
+offset_right = 309.0
+offset_bottom = 66.0
+scale = Vector2(1.12, 1.12)
+theme_override_font_sizes/font_size = 48
+text = "Day: 1"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="DayCount"]
+libraries = {
+"": SubResource("AnimationLibrary_al572")
+}
+
+[node name="ShopLabel" type="PanelContainer" parent="."]
+offset_left = 1781.0
+offset_top = 70.0
+offset_right = 1903.0
+offset_bottom = 130.0
+theme = ExtResource("3_dispi")
+
+[node name="MarginContainer" type="MarginContainer" parent="ShopLabel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Label" type="Label" parent="ShopLabel/MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "Shop"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = 1633.0
+offset_top = 146.0
+offset_right = 1908.0
+offset_bottom = 812.0
+theme_override_constants/separation = 18
+
+[node name="Cooking" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_dispi")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Cooking"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Label" type="Label" parent="VBoxContainer/Cooking/MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "Cooking"
+horizontal_alignment = 1
+
+[node name="Gardening" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_dispi")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Gardening"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Label" type="Label" parent="VBoxContainer/Gardening/MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "Gardening"
+horizontal_alignment = 1
+
+[node name="Guitar" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_dispi")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Guitar"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Label" type="Label" parent="VBoxContainer/Guitar/MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "Guitar"
+horizontal_alignment = 1
+
+[node name="Karaoke" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_dispi")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Karaoke"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Label" type="Label" parent="VBoxContainer/Karaoke/MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "Karaoke"
+horizontal_alignment = 1
+
+[node name="Painting" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_dispi")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Painting"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Label" type="Label" parent="VBoxContainer/Painting/MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "Painting"
+horizontal_alignment = 1
+
+[node name="Reading" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_dispi")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Reading"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Label" type="Label" parent="VBoxContainer/Reading/MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "Reading"
+horizontal_alignment = 1
+
+[connection signal="gui_input" from="VBoxContainer/Cooking" to="." method="_on_cooking_gui_input"]
+[connection signal="gui_input" from="VBoxContainer/Gardening" to="." method="_on_gardening_gui_input"]
+[connection signal="gui_input" from="VBoxContainer/Guitar" to="." method="_on_guitar_gui_input"]
+[connection signal="gui_input" from="VBoxContainer/Karaoke" to="." method="_on_karaoke_gui_input"]
+[connection signal="gui_input" from="VBoxContainer/Painting" to="." method="_on_painting_gui_input"]
+[connection signal="gui_input" from="VBoxContainer/Reading" to="." method="_on_reading_gui_input"]
