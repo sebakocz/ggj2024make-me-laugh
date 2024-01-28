@@ -771,4 +771,5 @@ script = ExtResource("18_xmb2a")
 [connection signal="state_exited" from="StateChart/CompoundState/Active/Actions/Using" to="." method="_on_using_state_exited"]
 [connection signal="state_exited" from="StateChart/CompoundState/Active/Actions/Using" to="ProgressBar" method="_on_using_state_exited"]
 [connection signal="state_physics_processing" from="StateChart/CompoundState/Active/Actions/Using" to="ProgressBar" method="_on_using_state_physics_processing"]
+[connection signal="taken" from="StateChart/CompoundState/Active/Inactive" to="." method="_on_inactive_taken"]
 [connection signal="taken" from="StateChart/CompoundState/Active/Inactive" to="StressedBubble" method="_on_inactive_taken"]

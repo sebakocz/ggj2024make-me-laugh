@@ -8,6 +8,7 @@ extends CanvasLayer
 
 @onready var laugh_bar = $LaughBar
 @onready var smiley = %Smiley
+@onready var sad_smiley = %SadSmiley
 
 signal trying_to_buy_item(itemName: String)
 signal trying_to_buy_character(characterIndex: int)
@@ -33,14 +34,11 @@ func _on_main_laught_points_changed(points):
 	tween.tween_property(laugh_bar, "value", points, 1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	
 	smiley.get_node("AnimationPlayer").play("Smiley_Impulse")
+	sad_smiley.get_node("AnimationPlayer").play("Smiley_Impulse")
 
 func _update_star_count_label(count: int):
-	star_count_label.visible = count > 0
-	star_count_label.text = "x" + str(count)
 	var anim = star_count_label.get_node("AnimationPlayer")
 	anim.play("Bump")
-	await get_tree().create_timer(anim.current_animation_length).timeout
-	anim.play("Pulse")
 
 func _on_main_laught_stars_changed(stars: int):
 	_update_star_count_label(stars)
@@ -98,7 +96,7 @@ func _update_character_info(characters: Array):
 		var cast_character = cast.get_child(i)
 		var stress_string = ""
 		for j in range(character.stress_level):
-			stress_string += "- "
+			stress_string += "😰"
 		cast_character.get_node("GridContainer").get_node("Name_Value").text = character.name
 		var current_stress_string = cast_character.get_node("GridContainer").get_node("Stress_Value").text
 		if current_stress_string.length() > stress_string.length():
@@ -118,6 +116,7 @@ func _update_character_info(characters: Array):
 		cast_character.get_node("GridContainer").get_node("Hates_Value").text = Character.Trait.keys()[character.bad_trait].to_lower()
 		cast_character.get_node("Sprite2D").texture = character.get_node("AnimatedSprite2D").sprite_frames.get_frame_texture("Idle", 0) # whack
 		cast_character.get_node("Sprite2D").scale = Vector2(1.8, 1.8) # idk why the the sprite size explodes - this is a fix
+		cast_character.get_node("PriceTag").visible = !character.active
 
 func _on_character_1_gui_input(event):
 	if event is InputEventMouseButton:

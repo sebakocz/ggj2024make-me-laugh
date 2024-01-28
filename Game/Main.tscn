@@ -17337,12 +17337,12 @@ region = Rect2(288, 12, 32, 50)
 script = ExtResource("1_inf3x")
 item_state_charts_debug = NodePath("Debug/ItemStateChartDebugger")
 character_state_charts_debug = NodePath("Debug/CharacterStateChartDebugger")
+bad_bonus = 30
 characters_node = NodePath("Characters")
 character_scene = ExtResource("6_2bgv6")
 
 [node name="DayTimer" type="Timer" parent="."]
 wait_time = 10.0
-autostart = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
@@ -17468,6 +17468,7 @@ script = ExtResource("18_jliyl")
 [connection signal="laught_points_changed" from="." to="Audience" method="_on_main_laught_points_changed"]
 [connection signal="laught_points_changed" from="." to="LaughTrack" method="_on_main_laught_points_changed"]
 [connection signal="laught_stars_changed" from="." to="UI" method="_on_main_laught_stars_changed"]
+[connection signal="money_changed" from="." to="." method="_on_money_changed"]
 [connection signal="money_changed" from="." to="UI" method="_on_main_money_changed"]
 [connection signal="timeout" from="DayTimer" to="." method="_on_day_timer_timeout"]
 [connection signal="trying_to_buy_character" from="UI" to="." method="_on_ui_trying_to_buy_character"]

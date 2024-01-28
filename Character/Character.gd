@@ -1,6 +1,29 @@
 extends CharacterBody2D
 class_name Character
 
+const RANDOM_NAMES = [
+	"Alex",
+	"Jordan",
+	"Taylor",
+	"Casey",
+	"Riley",
+	"Jamie",
+	"Sam",
+	"Avery",
+	"Reese",
+	"Cameron",
+	"Blake",
+	"Dakota",
+	"Morgan",
+	"Quinn",
+	"Skyler",
+	"Charlie",
+	"Emery",
+	"Finley",
+	"Peyton",
+	"Sawyer"
+]
+
 enum Trait {
 	GUITAR,
 	READING,
@@ -49,7 +72,7 @@ func initialize(new_name: String, new_good_trait: Trait, new_bad_trait: Trait):
 	good_trait = new_good_trait
 	bad_trait = new_bad_trait
 
-	# how to do animations?
+	# how to do animations? idk, whatever
 
 func set_target(target: Vector2):
 	nav.target_position = target
@@ -91,7 +114,7 @@ func _on_moving_state_physics_processing(_delta: float):
 	move_and_slide()
 
 func _on_area_2d_mouse_entered():
-	if busy:
+	if busy or !active:
 		return
 
 	highlight.visible = true
@@ -104,7 +127,7 @@ func _on_area_2d_mouse_exited():
 
 func _on_area_2d_input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
-		if busy:
+		if busy or !active:
 			busy_bubble.visible = true
 			await get_tree().create_timer(1).timeout
 			busy_bubble.visible = false
@@ -117,26 +140,33 @@ func _on_area_2d_input_event(_viewport, event, _shape_idx):
 			get_tree().get_root().set_input_as_handled()
 
 func _on_using_state_exited():
-	current_target.state_chart.send_event("finish_use")
 	var result = _check_trait(current_target.applicable_trait)
 
 	# stress penalty
 	if result == TraitResult.BAD:
 		stress_level += 1
-		# TODO: stress level threshold
+		if stress_level >= STRESS_THRESHOLD:
+			print("stress level reached")
+			state_chart.send_event("inactivated")
 	elif result == TraitResult.GOOD:
 		stress_level -= 1 if stress_level > 0 else 0
 	changed_info.emit(self)
 	
+	if current_target != null:
+		current_target.used_by_mask.visible = false
+		current_target.state_chart.send_event("finish_use")
+
 	# thought bubble
+	if !active:
+		return
+	
 	var bubble = thought_bubble.instantiate()
 	bubble.initialize(result)
 	add_child(bubble)
 
-	finished_use.emit(result)
-	current_target.used_by_mask.visible = false
 	current_target = null
 	busy = false
+	finished_use.emit(result)
 
 func _check_trait(trait_to_be_checked: Trait) -> TraitResult:
 	if trait_to_be_checked == good_trait:
@@ -179,3 +209,10 @@ func _on_using_state_entered():
 
 func _on_active_state_entered():
 	active = true
+	changed_info.emit(self)
+
+func _on_inactive_taken():
+	active = false
+	await get_tree().create_timer(2.5).timeout
+	changed_info.emit(self)
+	queue_free()

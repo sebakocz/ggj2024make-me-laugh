@@ -16,7 +16,7 @@ var selected_character: Character = null
 var laugh_stars: int = 0
 var laugh_points = 0
 
-var money = 1000
+var money = 400
 @export var item_cost = 100
 
 @export var character_cost = 100
@@ -41,6 +41,7 @@ func _ready():
 		character.connect("finished_use", _on_character_finished_use)
 		character.connect("auto_pick_start", _clear_character)
 		character.connect("changed_info", _on_character_changed_info)
+		character.connect("tree_exited", _populate_cast)
 	
 	for item in get_tree().get_nodes_in_group("item"):
 		item.connect("clicked", _on_item_clicked)
@@ -57,17 +58,28 @@ func _populate_cast():
 	if characters_node.get_children().size() >= MAX_CHARACTERS:
 		return
 	
+	var new_random_character_scene = _random_character_scene()
+	var new_character = load(new_random_character_scene).instantiate()
+
+	# make sure it's two different traits
+	var trait1 = Character.Trait.values()[randi() % Character.Trait.keys().size()]
+	var trait2 = Character.Trait.values()[randi() % Character.Trait.keys().size()]
+	while trait1 == trait2:
+		trait2 = Character.Trait.values()[randi() % Character.Trait.keys().size()]
+
+	var random_amount_of_spaces = " ".repeat(randi() % 3)
+
 	# generate random character
-	var new_character = character_scene.instantiate()
 	new_character.initialize(
-		"Adam" + str(randf()),
-		Character.Trait.COOKING,
-		Character.Trait.GUITAR,
+		Character.RANDOM_NAMES[randi() % Character.RANDOM_NAMES.size()] + random_amount_of_spaces,
+		trait1,
+		trait2
 	)
 	new_character.connect("clicked", _on_character_clicked)
 	new_character.connect("finished_use", _on_character_finished_use)
 	new_character.connect("auto_pick_start", _clear_character)
 	new_character.connect("changed_info", _on_character_changed_info)
+	new_character.connect("tree_exited", _populate_cast)
 	characters_node.add_child(new_character)
 
 	_populate_cast()
@@ -76,6 +88,12 @@ func _populate_cast():
 	new_character.position = Vector2(1000, 1000)
 
 	characters_changed.emit(characters_node.get_children())
+
+func _random_character_scene():
+	var path = "res://Character/List"
+	var character_files = DirAccess.get_files_at(path)
+	var random_index = randi() % character_files.size()
+	return path + "/" + character_files[random_index]
 
 func _on_item_finished_cooldown(item):
 	if selected_character == null:
@@ -117,10 +135,12 @@ func _on_character_finished_use(trait_result: Character.TraitResult):
 
 	if laugh_points >= 100:
 		laugh_points = 0
+		money += 100
 		laugh_stars += 1
 		await get_tree().create_timer(1).timeout
 		laught_points_changed.emit(laugh_points)
 		laught_stars_changed.emit(laugh_stars)
+		money_changed.emit(money)
 
 func _on_item_clicked(item):
 	selected_character.set_item(item)
@@ -162,6 +182,20 @@ func _on_day_timer_timeout():
 	day += 1
 	day_changed.emit(day)
 
+	# low engagement penalty
+	if laugh_points <= 0:
+		for character in characters_node.get_children():
+			if character.active:
+				character.stress_level += 1
+				character.changed_info.emit(character)
+				if character.stress_level >= Character.STRESS_THRESHOLD:
+					character.state_chart.send_event("inactivated")
+
+	laugh_points -= 10
+	if laugh_points < 0:
+		laugh_points = 0
+	laught_points_changed.emit(laugh_points)
+
 func _on_ui_trying_to_buy_character(characterIndex: int):
 	if characters_node.get_children()[characterIndex].active:
 		return
@@ -188,3 +222,14 @@ func deselect_character():
 		selected_character = null
 		characted_selected.emit(null)
 		_enable_items(false)
+
+var flip = true
+
+func _on_money_changed(_money):
+	if !flip:
+		return
+	flip = false
+
+	$DayTimer.start()
+	$UI.get_node("DayCount").get_node("AnimatedSprite2D").play("default")
+	$UI.get_node("ArrowLeft").queue_free()
