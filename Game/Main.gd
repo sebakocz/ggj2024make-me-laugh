@@ -9,6 +9,7 @@ var selected_character: Character = null
 @export var good_bonus: int = 5
 @export var bad_bonus: int = 20
 
+var laugh_stars: int = 0
 var laugh_points = 0
 
 signal laught_points_changed(points: int)
@@ -58,8 +59,16 @@ func _on_character_finished_use(trait_result: Character.TraitResult):
 			laugh_points += good_bonus
 		Character.TraitResult.BAD:
 			laugh_points += bad_bonus
+		Character.TraitResult.NEUTRAL:
+			return
 	
 	laught_points_changed.emit(laugh_points)
+
+	if laugh_points >= 100:
+		laugh_points = 0
+		laugh_stars += 1
+		await get_tree().create_timer(1).timeout
+		laught_points_changed.emit(laugh_points)
 
 func _on_item_clicked(item):
 	selected_character.set_item(item)

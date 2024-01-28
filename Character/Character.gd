@@ -98,6 +98,12 @@ func _on_area_2d_input_event(_viewport, event, _shape_idx):
 func _on_using_state_exited():
 	current_target.state_chart.send_event("finish_use")
 	var result = _check_trait(current_target.applicable_trait)
+	
+	# thought bubble
+	var bubble = thought_bubble.instantiate()
+	bubble.initialize(result)
+	add_child(bubble)
+
 	finished_use.emit(result)
 	current_target.used_by_mask.visible = false
 	current_target = null
@@ -139,3 +145,6 @@ func _get_random_unoccupied_item() -> Item:
 		return null
 
 	return unoccupied_items[randi() % unoccupied_items.size()]
+
+func _on_using_state_entered():
+	current_target.used_by_mask.visible = false

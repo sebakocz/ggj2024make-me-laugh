@@ -18,6 +18,7 @@ func initialize(trait_result: Character.TraitResult):
 			emoji = _get_random_emoji_from_path(_get_emojis_dir_path("Bad"))
 	
 	if emoji != null:
+		# res://Assets/Emojis/Neutral/38_face with raised eyebrow.png
 		$Emoji.texture = load(emoji)
 		$Emoji.visible = false
 	else:
@@ -29,4 +30,4 @@ func _get_emojis_dir_path(emoji_type: String) -> String:
 func _get_random_emoji_from_path(path: String) -> String:
 	var emoji_files = DirAccess.get_files_at(path)
 	var random_index = randi() % emoji_files.size()
-	return path + "/" + emoji_files[random_index]
+	return path + "/" + emoji_files[random_index].replace(".import", "")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://cnpvuhye6ru8b"]
+[gd_scene load_steps=36 format=3 uid="uid://cnpvuhye6ru8b"]
 
 [ext_resource type="Script" path="res://Game/Main.gd" id="1_inf3x"]
 [ext_resource type="Script" path="res://Game/Debug.gd" id="2_d8mgm"]
@@ -16,7 +16,9 @@
 [ext_resource type="PackedScene" uid="uid://bwfykgec8u4t4" path="res://Item/List/Kitchen.tscn" id="10_yuyub"]
 [ext_resource type="PackedScene" uid="uid://dtpxkwx1umu0v" path="res://Item/List/Plant.tscn" id="11_0wnyt"]
 [ext_resource type="Texture2D" uid="uid://tamdhngcjqco" path="res://Assets/Tilesheets/2_LivingRoom_32x32.png" id="16_uhtm4"]
-[ext_resource type="PackedScene" uid="uid://1n847udyt1dh" path="res://Character/Thought_bubble.tscn" id="17_qhafq"]
+[ext_resource type="AudioStream" uid="uid://drm0et3r5kbpx" path="res://Audio/audience-laughs-short-smartsound-fx-2-2-00-05.mp3" id="17_l46t8"]
+[ext_resource type="Script" path="res://Game/Audience.gd" id="17_sni4j"]
+[ext_resource type="Script" path="res://Game/LaughTrack.gd" id="18_jliyl"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tcdxh"]
 texture = ExtResource("5_ues1l")
@@ -17290,6 +17292,49 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(-299, -109, -296, 155, 
 source_geometry_mode = 1
 source_geometry_group_name = &"navigation"
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0e3ay"]
+load_path = "res://.godot/imported/Audience.png-1684402f1f20ec829b7fa0491dbda0ba.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8tkst"]
+atlas = SubResource("CompressedTexture2D_0e3ay")
+region = Rect2(0, 16, 30, 46)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4o37h"]
+atlas = SubResource("CompressedTexture2D_0e3ay")
+region = Rect2(32, 18, 32, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n8q48"]
+atlas = SubResource("CompressedTexture2D_0e3ay")
+region = Rect2(64, 18, 32, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eubhk"]
+atlas = SubResource("CompressedTexture2D_0e3ay")
+region = Rect2(128, 18, 32, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s8hu1"]
+atlas = SubResource("CompressedTexture2D_0e3ay")
+region = Rect2(160, 18, 32, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i6tlt"]
+atlas = SubResource("CompressedTexture2D_0e3ay")
+region = Rect2(257, 12, 30, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ojc2p"]
+atlas = SubResource("CompressedTexture2D_0e3ay")
+region = Rect2(96, 18, 32, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p5ftc"]
+atlas = SubResource("CompressedTexture2D_0e3ay")
+region = Rect2(192, 18, 31, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4vc3j"]
+atlas = SubResource("CompressedTexture2D_0e3ay")
+region = Rect2(224, 14, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lfc30"]
+atlas = SubResource("CompressedTexture2D_0e3ay")
+region = Rect2(288, 12, 32, 50)
+
 [node name="Main" type="Node2D" node_paths=PackedStringArray("item_state_charts_debug", "character_state_charts_debug")]
 script = ExtResource("1_inf3x")
 item_state_charts_debug = NodePath("Debug/ItemStateChartDebugger")
@@ -17304,16 +17349,16 @@ zoom = Vector2(2, 2)
 script = ExtResource("2_d8mgm")
 
 [node name="CharacterStateChartDebugger" parent="Debug" instance=ExtResource("5_nmonl")]
-offset_left = 269.0
-offset_top = -231.0
-offset_right = -1449.0
-offset_bottom = -872.0
+offset_left = 254.0
+offset_top = -989.0
+offset_right = -1464.0
+offset_bottom = -1630.0
 
 [node name="ItemStateChartDebugger" parent="Debug" instance=ExtResource("5_nmonl")]
-offset_left = -469.0
-offset_top = -220.0
-offset_right = -2195.0
-offset_bottom = -862.0
+offset_left = -484.0
+offset_top = -978.0
+offset_right = -2210.0
+offset_bottom = -1620.0
 
 [node name="Characters" type="Node" parent="."]
 
@@ -17322,7 +17367,7 @@ position = Vector2(117, 58)
 collision_layer = 1
 
 [node name="Alex" parent="Characters" instance=ExtResource("7_sav0r")]
-position = Vector2(-119, 29)
+position = Vector2(-95.5, 26)
 collision_layer = 1
 
 [node name="Amelia" parent="Characters" instance=ExtResource("8_qwsyq")]
@@ -17366,7 +17411,63 @@ layer_3/tile_data = PackedInt32Array(-262130, 1572866, 25, -196594, 1572866, 26,
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("NavigationPolygon_5ol1i")
 
-[node name="ThoughtBubble" parent="." instance=ExtResource("17_qhafq")]
-position = Vector2(-190, 52)
+[node name="Audience" type="Node" parent="."]
+script = ExtResource("17_sni4j")
+
+[node name="Sprite2D" type="Sprite2D" parent="Audience"]
+position = Vector2(305, 166)
+scale = Vector2(2.40625, 2.40625)
+texture = SubResource("AtlasTexture_8tkst")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Audience"]
+position = Vector2(-316.5, 167)
+scale = Vector2(2.40625, 2.40625)
+texture = SubResource("AtlasTexture_4o37h")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Audience"]
+position = Vector2(-115.5, 174)
+scale = Vector2(2.40625, 2.40625)
+texture = SubResource("AtlasTexture_n8q48")
+
+[node name="Sprite2D5" type="Sprite2D" parent="Audience"]
+position = Vector2(211, 173)
+scale = Vector2(2.40625, 2.40625)
+texture = SubResource("AtlasTexture_eubhk")
+
+[node name="Sprite2D6" type="Sprite2D" parent="Audience"]
+position = Vector2(113, 179)
+scale = Vector2(2.40625, 2.40625)
+texture = SubResource("AtlasTexture_s8hu1")
+
+[node name="Sprite2D9" type="Sprite2D" parent="Audience"]
+position = Vector2(-212.5, 163)
+scale = Vector2(2.40625, 2.40625)
+texture = SubResource("AtlasTexture_i6tlt")
+
+[node name="Sprite2D4" type="Sprite2D" parent="Audience"]
+position = Vector2(162, 234)
+scale = Vector2(2.40625, 2.40625)
+texture = SubResource("AtlasTexture_ojc2p")
+
+[node name="Sprite2D7" type="Sprite2D" parent="Audience"]
+position = Vector2(-261.5, 226)
+scale = Vector2(2.40625, 2.40625)
+texture = SubResource("AtlasTexture_p5ftc")
+
+[node name="Sprite2D8" type="Sprite2D" parent="Audience"]
+position = Vector2(-152.5, 229)
+scale = Vector2(2.40625, 2.40625)
+texture = SubResource("AtlasTexture_4vc3j")
+
+[node name="Sprite2D10" type="Sprite2D" parent="Audience"]
+position = Vector2(267, 214)
+scale = Vector2(2.40625, 2.40625)
+texture = SubResource("AtlasTexture_lfc30")
+
+[node name="LaughTrack" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("17_l46t8")
+script = ExtResource("18_jliyl")
 
 [connection signal="laught_points_changed" from="." to="UI" method="_on_main_laught_points_changed"]
+[connection signal="laught_points_changed" from="." to="Audience" method="_on_main_laught_points_changed"]
+[connection signal="laught_points_changed" from="." to="LaughTrack" method="_on_main_laught_points_changed"]

@@ -55,6 +55,7 @@ animations = [{
 }]
 
 [node name="ThoughtBubble" type="AnimatedSprite2D"]
+position = Vector2(0, -26)
 sprite_frames = SubResource("SpriteFrames_38r5b")
 autoplay = "default"
 frame = 5

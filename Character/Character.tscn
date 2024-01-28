@@ -1,7 +1,8 @@
-[gd_scene load_steps=64 format=3 uid="uid://dc6bqmduefhpy"]
+[gd_scene load_steps=65 format=3 uid="uid://dc6bqmduefhpy"]
 
 [ext_resource type="Texture2D" uid="uid://baqcpbquym06p" path="res://Assets/Characters/Alex/Alex_idle_anim_32x32.png" id="1_62yxv"]
 [ext_resource type="Script" path="res://Character/Character.gd" id="1_a58sx"]
+[ext_resource type="PackedScene" uid="uid://1n847udyt1dh" path="res://Character/Thought_bubble.tscn" id="2_3cg4s"]
 [ext_resource type="Texture2D" uid="uid://dtqpm5dh2qxv0" path="res://Assets/Characters/Alex/Alex_run_32x32.png" id="3_c6csl"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="3_rkn5k"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="4_d3qsh"]
@@ -475,6 +476,7 @@ bg_color = Color(0.4, 0.678431, 0.258824, 1)
 [node name="Character" type="CharacterBody2D" groups=["character"]]
 script = ExtResource("1_a58sx")
 min_distance = 50.0
+thought_bubble = ExtResource("2_3cg4s")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 27)
@@ -592,6 +594,7 @@ texture = ExtResource("11_yk30n")
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
 [connection signal="taken" from="StateChart/ParallelState/Actions/Idle/Auto Target" to="." method="_on_auto_target_taken"]
 [connection signal="state_physics_processing" from="StateChart/ParallelState/Actions/Moving" to="." method="_on_moving_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/ParallelState/Actions/Using" to="." method="_on_using_state_entered"]
 [connection signal="state_entered" from="StateChart/ParallelState/Actions/Using" to="ProgressBar" method="_on_using_state_entered"]
 [connection signal="state_exited" from="StateChart/ParallelState/Actions/Using" to="." method="_on_using_state_exited"]
 [connection signal="state_exited" from="StateChart/ParallelState/Actions/Using" to="ProgressBar" method="_on_using_state_exited"]

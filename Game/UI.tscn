@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://ckcwtq5q5ccrb"]
+[gd_scene load_steps=10 format=3 uid="uid://ckcwtq5q5ccrb"]
 
 [ext_resource type="Script" path="res://Game/UI.gd" id="1_ahg80"]
 [ext_resource type="Texture2D" uid="uid://c770rqfivasng" path="res://Assets/Emojis/Good/7_rolling on the floor laughing.png" id="2_2q2rf"]
@@ -14,12 +14,38 @@ gradient = SubResource("Gradient_f3qwe")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_e2tub"]
 texture = SubResource("GradientTexture2D_43j3c")
 
-[node name="UI" type="CanvasLayer" node_paths=PackedStringArray("value_name", "value_likes", "value_hates", "sprite")]
+[sub_resource type="Animation" id="Animation_bbaiw"]
+length = 0.001
+
+[sub_resource type="Animation" id="Animation_872l1"]
+resource_name = "Smiley_Impulse"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(3.49101, 3.49101), Vector2(6.16669, 6.16669), Vector2(3.5, 3.5)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_784da"]
+_data = {
+"RESET": SubResource("Animation_bbaiw"),
+"Smiley_Impulse": SubResource("Animation_872l1")
+}
+
+[node name="UI" type="CanvasLayer" node_paths=PackedStringArray("value_name", "value_likes", "value_hates", "sprite", "info_panel")]
 script = ExtResource("1_ahg80")
 value_name = NodePath("Panel/GridContainer/Name_Value")
 value_likes = NodePath("Panel/GridContainer/Likes_Value")
 value_hates = NodePath("Panel/GridContainer/Hates_Value")
 sprite = NodePath("Panel/Sprite2D")
+info_panel = NodePath("Panel")
 
 [node name="LaughBar" type="ProgressBar" parent="."]
 anchors_preset = -1
@@ -38,18 +64,25 @@ theme_override_styles/fill = SubResource("StyleBoxTexture_e2tub")
 metadata/_edit_use_anchors_ = true
 
 [node name="Smiley" type="Sprite2D" parent="LaughBar"]
+unique_name_in_owner = true
 position = Vector2(771, 29)
-scale = Vector2(3.49101, 3.49101)
+scale = Vector2(3.5, 3.5)
 texture = ExtResource("2_2q2rf")
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="LaughBar/Smiley"]
+libraries = {
+"": SubResource("AnimationLibrary_784da")
+}
+
 [node name="Panel" type="Panel" parent="."]
-offset_left = 506.0
-offset_top = 175.0
-offset_right = 749.0
-offset_bottom = 293.0
+visible = false
+offset_left = 468.0
+offset_top = 162.0
+offset_right = 831.0
+offset_bottom = 313.0
 
 [node name="Sprite2D" type="Sprite2D" parent="Panel"]
-position = Vector2(46, 41)
+position = Vector2(46, 59)
 scale = Vector2(28.5, 28.5)
 
 [node name="GridContainer" type="GridContainer" parent="Panel"]
@@ -62,24 +95,30 @@ columns = 2
 
 [node name="Name_Label" type="Label" parent="Panel/GridContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 32
 text = "Name:"
 
 [node name="Name_Value" type="Label" parent="Panel/GridContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 32
 text = "..."
 
 [node name="Likes_Label" type="Label" parent="Panel/GridContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 32
 text = "Likes:"
 
 [node name="Likes_Value" type="Label" parent="Panel/GridContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 32
 text = "..."
 
 [node name="Hates_Label" type="Label" parent="Panel/GridContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 32
 text = "Hates:"
 
 [node name="Hates_Value" type="Label" parent="Panel/GridContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 32
 text = "..."

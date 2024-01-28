@@ -84,6 +84,8 @@ script = ExtResource("8_02n0w")
 
 [node name="UsedByMask" type="Sprite2D" parent="."]
 visible = false
+modulate = Color(1, 1, 1, 0.996078)
+self_modulate = Color(1, 1, 1, 0.54902)
 clip_children = 1
 position = Vector2(0, -49)
 texture = ExtResource("9_amejc")
